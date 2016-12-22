@@ -34,16 +34,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 showAllAlarms();
                 break;
             case R.id.button_add_calendar_event:
-                Calendar beginTime = Calendar.getInstance();
-                beginTime.setTime(new Date(System.currentTimeMillis() + 10*60*1000)); // 10 minutes later
-                Calendar endTime = Calendar.getInstance();
-                endTime.setTime(new Date(System.currentTimeMillis() + 24*60*60*1000)); // a day later
+                long beginTime = System.currentTimeMillis() + 10*60*1000;// 10 minutes later
+                long endTime = System.currentTimeMillis() + 24*60*60*1000; // a day later
                 addCalendarEvent("TestCalendarEventAdd", null, beginTime, endTime);
                 break;
         }
     }
 
-    public void addCalendarEvent(String title, String location, Calendar begin, Calendar end) {
+    public void addCalendarEvent(String title, String location, long begin, long end) {
         Intent intent = new Intent(Intent.ACTION_INSERT)
                 .setData(CalendarContract.Events.CONTENT_URI)
                 .putExtra(CalendarContract.Events.TITLE, title)
