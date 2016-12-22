@@ -3,9 +3,13 @@ package com.example.tim.commonintents;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.AlarmClock;
+import android.provider.CalendarContract;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+
+import java.util.Calendar;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -29,6 +33,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button_show_alarms:
                 showAllAlarms();
                 break;
+            case R.id.button_add_calendar_event:
+                Calendar beginTime = Calendar.getInstance();
+                beginTime.setTime(new Date(System.currentTimeMillis() + 10*60*1000)); // 10 minutes later
+                Calendar endTime = Calendar.getInstance();
+                endTime.setTime(new Date(System.currentTimeMillis() + 24*60*60*1000)); // a day later
+                addCalendarEvent("TestCalendarEventAdd", null, beginTime, endTime);
+                break;
+        }
+    }
+
+    public void addCalendarEvent(String title, String location, Calendar begin, Calendar end) {
+        Intent intent = new Intent(Intent.ACTION_INSERT)
+                .setData(CalendarContract.Events.CONTENT_URI)
+                .putExtra(CalendarContract.Events.TITLE, title)
+                .putExtra(CalendarContract.Events.EVENT_LOCATION, location)
+                .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, begin)
+                .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, end);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
         }
     }
 
