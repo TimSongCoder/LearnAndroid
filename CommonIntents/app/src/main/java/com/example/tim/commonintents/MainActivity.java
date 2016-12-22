@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void composeEmail(String subject, String[] recipients) {
         Intent intent = new Intent(Intent.ACTION_SENDTO);  // Email app do not respond to ACTION_SEND on Xiaomi device.
-        intent.setData(Uri.parse("mailto:"));  // need component who can handle mailto scheme, aka email app.
+        intent.setData(Uri.parse("mailto:"));  // need component who can handle mailto: scheme, aka email app.
         intent.putExtra(Intent.EXTRA_EMAIL, recipients);
         intent.putExtra(Intent.EXTRA_SUBJECT, subject);
         if(intent.resolveActivity(getPackageManager())!=null){
