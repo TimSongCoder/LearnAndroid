@@ -63,27 +63,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button_select_contact:
                 selectContact();
                 break;
+            case R.id.button_select_specific_contact_data:
+                selectContactPhone();
+                break;
+        }
+    }
+
+    private void selectContactPhone() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(intent, REQUEST_SELECT_CONTACT_PHONE);
         }
     }
 
     private void selectContact() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
-        if(intent.resolveActivity(getPackageManager())!=null){
+        if (intent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(intent, REQUEST_SELECT_CONTACT);
         }
     }
 
     private void startCameraInVideoMode() {
         Intent intent = new Intent(MediaStore.INTENT_ACTION_VIDEO_CAMERA);
-        if(intent.resolveActivity(getPackageManager())!=null){
+        if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
         }
     }
 
     private void startCameraInStillImageMode() {
         Intent intent = new Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA);
-        if(intent.resolveActivity(getPackageManager())!=null){
+        if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
         }
     }

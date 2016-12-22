@@ -83,4 +83,13 @@
         android:id="@+id/button_select_contact"
         android:onClick="onClick" />
 
+    <Button
+        android:text="Select Specific Contact Data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_select_contact"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/button_select_specific_contact_data"
+        android:onClick="onClick" />
+
 </RelativeLayout>
