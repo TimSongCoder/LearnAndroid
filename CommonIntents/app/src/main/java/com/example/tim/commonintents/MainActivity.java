@@ -21,20 +21,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch(view.getId()){
             case R.id.button_create_alarm:
-                createAlarm("下班买菜", 17, 32);
+                createAlarm("下班买菜", 10, 40);
                 break;
             case R.id.button_create_timer:
-                startTimer("下班倒计时", 600);
+                startTimer("下班倒计时", 60);
                 break;
         }
     }
 
-    // Not supported by vendors like MI, Huawei
     public void createAlarm(String message, int hour, int minutes) {
         Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM)
                 .putExtra(AlarmClock.EXTRA_MESSAGE, message)
                 .putExtra(AlarmClock.EXTRA_HOUR, hour)
-                .putExtra(AlarmClock.EXTRA_MINUTES, minutes);
+                .putExtra(AlarmClock.EXTRA_MINUTES, minutes)
+                .putExtra(AlarmClock.EXTRA_SKIP_UI, true);  // Vendor like Xiaomi support alarm create ui skip too.
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
             if(BuildConfig.DEBUG){
@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .putExtra(AlarmClock.EXTRA_MESSAGE, message)
                 .putExtra(AlarmClock.EXTRA_LENGTH, seconds)
                 .putExtra(AlarmClock.EXTRA_SKIP_UI, true);
+        // The ui skip support implementation varies from vendor to vendor, may be no visual tip for timer while it succeed like Xiaomi's device does.
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
             if(BuildConfig.DEBUG){

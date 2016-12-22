@@ -17,7 +17,8 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:id="@+id/button_create_alarm"
-        tools:ignore="HardcodedText" />
+        tools:ignore="HardcodedText"
+        android:onClick="onClick"/>
 
     <Button
         android:text="Create Timer"
@@ -25,6 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/button_create_alarm"
         android:layout_centerHorizontal="true"
-        android:id="@+id/button_create_timer" />
+        android:id="@+id/button_create_timer"
+        android:onClick="onClick"/>
 
 </RelativeLayout>
