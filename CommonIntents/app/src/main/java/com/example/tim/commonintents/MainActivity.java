@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.AlarmClock;
 import android.provider.CalendarContract;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -38,6 +39,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 long endTime = System.currentTimeMillis() + 24*60*60*1000; // a day later
                 addCalendarEvent("TestCalendarEventAdd", null, beginTime, endTime);
                 break;
+            case R.id.button_start_camera_in_still_image_mode:
+                startCameraInStillImageMode();
+                break;
+            case R.id.button_start_camera_in_video_mode:
+                startCameraInVideoMode();
+                break;
+        }
+    }
+
+    private void startCameraInVideoMode() {
+        Intent intent = new Intent(MediaStore.INTENT_ACTION_VIDEO_CAMERA);
+        if(intent.resolveActivity(getPackageManager())!=null){
+            startActivity(intent);
+        }
+    }
+
+    private void startCameraInStillImageMode() {
+        Intent intent = new Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA);
+        if(intent.resolveActivity(getPackageManager())!=null){
+            startActivity(intent);
         }
     }
 

@@ -47,4 +47,31 @@
         android:id="@+id/button_add_calendar_event"
         android:onClick="onClick" />
 
+    <Button
+        android:text="Start Camera In Still Image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_add_calendar_event"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/button_start_camera_in_still_image_mode"
+        android:onClick="onClick" />
+
+    <Button
+        android:text="Start Camera In Video Mode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_start_camera_still_image"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/button_start_camera_in_video_mode"
+        android:onClick="onClick" />
+
+    <Button
+        android:text="Start Camera In Video Mode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_start_camera_in_still_image_mode"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/button_start_camera_in_video_mode"
+        android:onClick="onClick" />
+
 </RelativeLayout>
