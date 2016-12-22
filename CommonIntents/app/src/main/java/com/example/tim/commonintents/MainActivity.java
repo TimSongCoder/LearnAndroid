@@ -1,9 +1,11 @@
 package com.example.tim.commonintents;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.AlarmClock;
 import android.provider.CalendarContract;
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -15,6 +17,19 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "MainActivity";
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_SELECT_CONTACT && resultCode == RESULT_OK){
+            Uri contactUri = data.getData();
+            if(BuildConfig.DEBUG){
+                Log.d(TAG, "onActivityResult - SelectedContact's URI: " + contactUri.toString());
+            }
+        }
+    }
+
+    private static final int REQUEST_SELECT_CONTACT = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +60,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button_start_camera_in_video_mode:
                 startCameraInVideoMode();
                 break;
+            case R.id.button_select_contact:
+                selectContact();
+                break;
+        }
+    }
+
+    private void selectContact() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
+        if(intent.resolveActivity(getPackageManager())!=null){
+            startActivityForResult(intent, REQUEST_SELECT_CONTACT);
         }
     }
 

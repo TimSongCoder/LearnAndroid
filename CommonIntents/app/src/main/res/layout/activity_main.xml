@@ -74,4 +74,13 @@
         android:id="@+id/button_start_camera_in_video_mode"
         android:onClick="onClick" />
 
+    <Button
+        android:text="Select A Contact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_start_camera_in_video_mode"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/button_select_contact"
+        android:onClick="onClick" />
+
 </RelativeLayout>
