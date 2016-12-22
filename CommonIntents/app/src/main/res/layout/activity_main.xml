@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -10,95 +10,102 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.tim.commonintents.MainActivity">
 
-    <Button
-        android:text="Create Alarm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/button_create_alarm"
-        tools:ignore="HardcodedText"
-        android:onClick="onClick"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <Button
-        android:text="Create Timer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/button_create_alarm"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/button_create_timer"
-        android:onClick="onClick"/>
+        <Button
+            android:id="@+id/button_create_alarm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:onClick="onClick"
+            android:text="Create Alarm"
+            tools:ignore="HardcodedText" />
 
-    <Button
-        android:text="Show All Alarms"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/button_create_timer"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/button_show_alarms"
-        android:onClick="onClick" />
+        <Button
+            android:id="@+id/button_create_timer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/button_create_alarm"
+            android:layout_centerHorizontal="true"
+            android:onClick="onClick"
+            android:text="Create Timer" />
 
-    <Button
-        android:text="Add Calendar Event"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/button_show_alarms"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/button_add_calendar_event"
-        android:onClick="onClick" />
+        <Button
+            android:id="@+id/button_show_alarms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/button_create_timer"
+            android:layout_centerHorizontal="true"
+            android:onClick="onClick"
+            android:text="Show All Alarms" />
 
-    <Button
-        android:text="Start Camera In Still Image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/button_add_calendar_event"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/button_start_camera_in_still_image_mode"
-        android:onClick="onClick" />
+        <Button
+            android:id="@+id/button_add_calendar_event"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/button_show_alarms"
+            android:layout_centerHorizontal="true"
+            android:onClick="onClick"
+            android:text="Add Calendar Event" />
 
-    <Button
-        android:text="Start Camera In Video Mode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/button_start_camera_still_image"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/button_start_camera_in_video_mode"
-        android:onClick="onClick" />
+        <Button
+            android:id="@+id/button_start_camera_in_still_image_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/button_add_calendar_event"
+            android:layout_centerHorizontal="true"
+            android:onClick="onClick"
+            android:text="Start Camera In Still Image" />
 
-    <Button
-        android:text="Start Camera In Video Mode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/button_start_camera_in_still_image_mode"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/button_start_camera_in_video_mode"
-        android:onClick="onClick" />
+        <Button
+            android:id="@+id/button_start_camera_in_video_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/button_start_camera_in_still_image_mode"
+            android:layout_centerHorizontal="true"
+            android:onClick="onClick"
+            android:text="Start Camera In Video Mode" />
 
-    <Button
-        android:text="Select A Contact"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/button_start_camera_in_video_mode"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/button_select_contact"
-        android:onClick="onClick" />
 
-    <Button
-        android:text="Select Specific Contact Data"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/button_select_contact"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/button_select_specific_contact_data"
-        android:onClick="onClick" />
+        <Button
+            android:id="@+id/button_select_contact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/button_start_camera_in_video_mode"
+            android:layout_centerHorizontal="true"
+            android:onClick="onClick"
+            android:text="Select A Contact" />
 
-    <Button
-        android:text="Insert Contact"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/button_select_specific_contact_data"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/button_insert_contact"
-        android:onClick="onClick" />
+        <Button
+            android:id="@+id/button_select_specific_contact_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/button_select_contact"
+            android:layout_centerHorizontal="true"
+            android:onClick="onClick"
+            android:text="Select Specific Contact Data" />
 
-</RelativeLayout>
+        <Button
+            android:id="@+id/button_insert_contact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/button_select_specific_contact_data"
+            android:layout_centerHorizontal="true"
+            android:onClick="onClick"
+            android:text="Insert Contact" />
+
+        <Button
+            android:id="@+id/button_compose_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:onClick="onClick"
+            android:text="Compose Email" />
+
+    </RelativeLayout>
+
+</ScrollView>

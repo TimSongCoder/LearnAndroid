@@ -111,6 +111,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button_insert_contact:
                 insertContact("风清扬", "fengqingyang@huashan.com");
                 break;
+            case R.id.button_compose_email:
+                composeEmail("2016华山论剑", new String[]{"fengqingyang@huashan.com", "saodiseng@shaolin.com"});
+                break;
+        }
+    }
+
+    private void composeEmail(String subject, String[] recipients) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("*/*");
+        intent.putExtra(Intent.EXTRA_EMAIL, recipients);
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        if(intent.resolveActivity(getPackageManager())!=null){
+            startActivity(intent);
         }
     }
 
