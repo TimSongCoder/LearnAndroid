@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String TAG = "MainActivity";
     private static final int REQUEST_SELECT_CONTACT = 1;
     private static final int REQUEST_SELECT_CONTACT_PHONE = 2;
+    private static final int REQUEST_INSERT_CONTACT = 3;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -66,6 +67,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
             cursor.close();
+        }else if(requestCode == REQUEST_INSERT_CONTACT && resultCode == RESULT_OK){
+            Toast.makeText(this, "Contact inserted successfully.", Toast.LENGTH_LONG).show();
+            // No result back, result callback done by intent handler component already.
         }
     }
 
@@ -104,6 +108,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button_select_specific_contact_data:
                 selectContactPhone();
                 break;
+            case R.id.button_insert_contact:
+                insertContact("风清扬", "fengqingyang@huashan.com");
+                break;
+        }
+    }
+
+    private void insertContact(String name, String email) {
+        Intent intent = new Intent(Intent.ACTION_INSERT);
+        intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
+        intent.putExtra(ContactsContract.Intents.Insert.NAME, name);
+        intent.putExtra(ContactsContract.Intents.Insert.EMAIL, email);
+        if(intent.resolveActivity(getPackageManager())!=null){
+            startActivityForResult(intent, REQUEST_INSERT_CONTACT);
         }
     }
 
