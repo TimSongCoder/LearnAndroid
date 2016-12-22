@@ -1,35 +1,73 @@
 package com.example.tim.commonintents;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.AlarmClock;
 import android.provider.CalendarContract;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-
-import java.util.Calendar;
-import java.util.Date;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "MainActivity";
+    private static final int REQUEST_SELECT_CONTACT = 1;
+    private static final int REQUEST_SELECT_CONTACT_PHONE = 2;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_SELECT_CONTACT && resultCode == RESULT_OK){
-            Uri contactUri = data.getData();
-            if(BuildConfig.DEBUG){
+        if (requestCode == REQUEST_SELECT_CONTACT && resultCode == RESULT_OK) {
+            final Uri contactUri = data.getData();
+            if (BuildConfig.DEBUG) {
                 Log.d(TAG, "onActivityResult - SelectedContact's URI: " + contactUri.toString());
             }
+            DialogInterface.OnClickListener dialogOnclickListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Intent intent = null;
+                    switch (i) {
+                        case DialogInterface.BUTTON_NEUTRAL:
+                            intent = new Intent(Intent.ACTION_VIEW, contactUri);
+                            break;
+                        case DialogInterface.BUTTON_POSITIVE:
+                            intent = new Intent(Intent.ACTION_EDIT, contactUri);
+                            intent.putExtra(ContactsContract.Intents.Insert.EMAIL, "saodiseng@shaolin.com"); // add an email address.
+                            break;
+                    }
+                    if (intent != null && intent.resolveActivity(getPackageManager()) != null) {
+                        startActivity(intent);
+                    }
+                    dialogInterface.dismiss();
+                }
+            };
+            new AlertDialog.Builder(this).setTitle("Got a contact")
+                    .setMessage("What do you want to do with the selected contact?")
+                    .setNeutralButton("View The Contact", dialogOnclickListener) // view the contact's detail information
+                    .setPositiveButton("Edit the contact", dialogOnclickListener)
+                    .create().show();
+        } else if (requestCode == REQUEST_SELECT_CONTACT_PHONE && resultCode == RESULT_OK) {
+            Uri phoneUri = data.getData();
+            // retrieve the phone value for use
+            String[] projection = new String[]{ContactsContract.CommonDataKinds.Phone.NUMBER};
+            Cursor cursor = getContentResolver().query(phoneUri, projection, null, null, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                String phoneStr = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                if (BuildConfig.DEBUG) {
+                    Log.d(TAG, "onActivityResult - SelectedContactPhone: " + phoneStr);
+                    Toast.makeText(this, "phone: " + phoneStr, Toast.LENGTH_LONG).show();
+                }
+            }
+            cursor.close();
         }
     }
-
-    private static final int REQUEST_SELECT_CONTACT = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +88,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 showAllAlarms();
                 break;
             case R.id.button_add_calendar_event:
-                long beginTime = System.currentTimeMillis() + 10*60*1000;// 10 minutes later
-                long endTime = System.currentTimeMillis() + 24*60*60*1000; // a day later
+                long beginTime = System.currentTimeMillis() + 10 * 60 * 1000;// 10 minutes later
+                long endTime = System.currentTimeMillis() + 24 * 60 * 60 * 1000; // a day later
                 addCalendarEvent("TestCalendarEventAdd", null, beginTime, endTime);
                 break;
             case R.id.button_start_camera_in_still_image_mode:
