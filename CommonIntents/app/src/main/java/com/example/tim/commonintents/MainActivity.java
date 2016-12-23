@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.AlarmClock;
 import android.provider.CalendarContract;
@@ -86,6 +87,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT){
+            findViewById(R.id.button_create_timer).setEnabled(false);
+            findViewById(R.id.button_show_alarms).setEnabled(false);
+        }
     }
 
     @Override
@@ -143,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         intent.setData(Uri.parse("mailto:"));  // need component who can handle mailto: scheme, aka email app.
         intent.putExtra(Intent.EXTRA_EMAIL, recipients);
         intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-        if(intent.resolveActivity(getPackageManager())!=null){
+        if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
         }
     }
@@ -153,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
         intent.putExtra(ContactsContract.Intents.Insert.NAME, name);
         intent.putExtra(ContactsContract.Intents.Insert.EMAIL, email);
-        if(intent.resolveActivity(getPackageManager())!=null){
+        if (intent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(intent, REQUEST_INSERT_CONTACT);
         }
     }
@@ -201,9 +206,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void showAllAlarms() {
-        Intent intent = new Intent(AlarmClock.ACTION_SHOW_ALARMS);
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivity(intent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Intent intent = new Intent(AlarmClock.ACTION_SHOW_ALARMS);
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
+            }
         }
     }
 
@@ -222,15 +229,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void startTimer(String message, int seconds) {
-        Intent intent = new Intent(AlarmClock.ACTION_SET_TIMER)
-                .putExtra(AlarmClock.EXTRA_MESSAGE, message)
-                .putExtra(AlarmClock.EXTRA_LENGTH, seconds)
-                .putExtra(AlarmClock.EXTRA_SKIP_UI, true);
-        // The ui skip support implementation varies from vendor to vendor, may be no visual tip for timer while it succeed like Xiaomi's device does.
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivity(intent);
-            if (BuildConfig.DEBUG) {
-                Log.d(TAG, "startTimerIntent resolved.");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Intent intent = new Intent(AlarmClock.ACTION_SET_TIMER)
+                    .putExtra(AlarmClock.EXTRA_MESSAGE, message)
+                    .putExtra(AlarmClock.EXTRA_LENGTH, seconds)
+                    .putExtra(AlarmClock.EXTRA_SKIP_UI, true);
+            // The ui skip support implementation varies from vendor to vendor, may be no visual tip for timer while it succeed like Xiaomi's device does.
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
+                if (BuildConfig.DEBUG) {
+                    Log.d(TAG, "startTimerIntent resolved.");
+                }
             }
         }
     }
