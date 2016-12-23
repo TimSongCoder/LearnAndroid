@@ -20,8 +20,6 @@ import android.widget.Toast;
 import com.google.android.gms.actions.ReserveIntents;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -153,6 +151,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button_reserve_car:
                 reserveCar();  // local action
                 break;
+            case R.id.button_view_location:
+                showLocationOnMap();
+                break;
+        }
+    }
+
+    private void showLocationOnMap() {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:47.6,-122.3?z=10"));
+        if(intent.resolveActivity(getPackageManager())!=null){
+            startActivity(intent);
+        }else{
+            Toast.makeText(this, "No app can handle your request, unfortunately.", Toast.LENGTH_LONG).show();
         }
     }
 

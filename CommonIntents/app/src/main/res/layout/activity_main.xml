@@ -133,6 +133,15 @@
             android:text="Reserve Car"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/button_open_file"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/button_reserve_car"
+            android:onClick="onClick"
+            android:id="@+id/button_view_location"
+            android:text="Show location on map" />
     </RelativeLayout>
 
 </ScrollView>
