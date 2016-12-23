@@ -154,6 +154,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button_view_location:
                 showLocationOnMap();
                 break;
+            case R.id.button_play_audio_file:
+                playAudioFile();
+                break;
+        }
+    }
+
+    private void playAudioFile() {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://ia800301.us.archive.org/14/items/art_of_war_librivox/art_of_war_01-02_sun_tzu.mp3"));
+        intent.setType("audio/*");  // without this, it always resolved to browser
+        if(intent.resolveActivity(getPackageManager())!=null){
+            startActivity(intent);
         }
     }
 

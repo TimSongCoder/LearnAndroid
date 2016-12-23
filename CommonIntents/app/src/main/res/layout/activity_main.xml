@@ -142,6 +142,15 @@
             android:onClick="onClick"
             android:id="@+id/button_view_location"
             android:text="Show location on map" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_play_audio_file"
+            android:layout_below="@id/button_view_location"
+            android:layout_centerHorizontal="true"
+            android:onClick="onClick"
+            android:text="Play audio file"/>
     </RelativeLayout>
 
 </ScrollView>
