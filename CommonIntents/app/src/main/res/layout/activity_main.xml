@@ -8,11 +8,13 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.tim.commonintents.MainActivity">
+    tools:context="com.example.tim.commonintents.MainActivity"
+    tools:ignore = "HardcodedText">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        >
 
         <Button
             android:id="@+id/button_create_alarm"
@@ -21,8 +23,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:onClick="onClick"
-            android:text="Create Alarm"
-            tools:ignore="HardcodedText" />
+            android:text="Create Alarm" />
 
         <Button
             android:id="@+id/button_create_timer"
@@ -115,6 +116,14 @@
             android:onClick="onClick"
             android:layout_below="@+id/button_compose_email" />
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/button_select_file"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/button_open_file"
+            android:onClick="onClick"
+            android:text="Open File" />
     </RelativeLayout>
 
 </ScrollView>

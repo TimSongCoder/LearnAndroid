@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final int REQUEST_SELECT_CONTACT_PHONE = 2;
     private static final int REQUEST_INSERT_CONTACT = 3;
     private static final int REQUEST_SELECT_FILE = 4;
+    private static final int REQUEST_OPEN_FILE = 5;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -74,11 +75,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Toast.makeText(this, "Contact inserted successfully.", Toast.LENGTH_LONG).show();
             // No result back, result callback done by intent handler component already.
         } else if (requestCode == REQUEST_SELECT_FILE && resultCode == RESULT_OK) {
-            Uri imageUri = data.getData();  // full-size image file
+            Uri imageUri = data.getData();
+            // full-size image file, with temporary access permission with the host activity's lifecycle, need import the copy if you want to access it later
             // retrieve the thumbnail for use
             Bitmap imageThumbnail = data.getParcelableExtra("data");
             if (BuildConfig.DEBUG) {
                 Log.d(TAG, "onActivityResult - selected a photo file: " + imageUri + ", with thumbnail: " + (imageThumbnail != null));  // Unfortunately, it is null.
+            }
+        }else if(requestCode == REQUEST_OPEN_FILE && resultCode == RESULT_OK){
+            // single file, open file uri stored in data; while multiple files stored in clipdata
+            Uri fileOpenUri = data.getData();  // long term access permission uri
+            if(BuildConfig.DEBUG){
+                Log.d(TAG, "onActivityResult - OPEN FILE: " + fileOpenUri);
             }
         }
     }
@@ -90,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT){
             findViewById(R.id.button_create_timer).setEnabled(false);
             findViewById(R.id.button_show_alarms).setEnabled(false);
+            findViewById(R.id.button_open_file).setEnabled(false);
         }
     }
 
@@ -131,6 +140,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button_select_file:
                 selectFile();
                 break;
+            case R.id.button_open_file:
+                openFile();
+                break;
+        }
+    }
+
+    private void openFile() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("image/*");
+            // only the system will respond to this intent, no need to verify resolution.
+            startActivityForResult(intent, REQUEST_OPEN_FILE);
         }
     }
 
