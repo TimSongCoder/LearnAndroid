@@ -17,6 +17,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.actions.ReserveIntents;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.api.GoogleApiClient;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "MainActivity";
@@ -25,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final int REQUEST_INSERT_CONTACT = 3;
     private static final int REQUEST_SELECT_FILE = 4;
     private static final int REQUEST_OPEN_FILE = 5;
+    private static final int REQUEST_GOOGLE_PLAY_SERVICE_ERROR_FIX = 6;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -143,6 +150,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button_open_file:
                 openFile();
                 break;
+            case R.id.button_reserve_car:
+                reserveCar();  // local action
+                break;
+        }
+    }
+
+    private void reserveCar() {
+        int verifyGooglePlayServicesAvailableResult = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this);
+        if(verifyGooglePlayServicesAvailableResult != ConnectionResult.SUCCESS){
+            Log.d(TAG, "GOOGLE API IS NOT AVAILABLE: " + verifyGooglePlayServicesAvailableResult);
+            GoogleApiAvailability.getInstance().getErrorDialog(this, verifyGooglePlayServicesAvailableResult, REQUEST_GOOGLE_PLAY_SERVICE_ERROR_FIX, null).show();
+        }
+        Intent intent = new Intent(ReserveIntents.ACTION_RESERVE_TAXI_RESERVATION); // NEED GOOGLE APIS/SERVICE SUPPORT
+        if(intent.resolveActivity(getPackageManager())!=null){
+            startActivity(intent);
+        }else{
+            Toast.makeText(this, "No app can handle this, unfortunately", Toast.LENGTH_LONG).show();
         }
     }
 

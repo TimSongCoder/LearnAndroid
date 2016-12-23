@@ -124,6 +124,15 @@
             android:id="@+id/button_open_file"
             android:onClick="onClick"
             android:text="Open File" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_reserve_car"
+            android:onClick="onClick"
+            android:text="Reserve Car"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/button_open_file"/>
     </RelativeLayout>
 
 </ScrollView>
