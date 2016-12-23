@@ -101,10 +101,19 @@
             android:id="@+id/button_compose_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
+            android:layout_below="@+id/button_insert_contact"
             android:onClick="onClick"
             android:text="Compose Email" />
+
+        <Button
+            android:text="Select A File"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/button_select_file"
+            android:onClick="onClick"
+            android:layout_below="@+id/button_compose_email" />
 
     </RelativeLayout>
 

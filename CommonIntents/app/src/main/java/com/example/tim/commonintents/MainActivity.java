@@ -3,6 +3,7 @@ package com.example.tim.commonintents;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.AlarmClock;
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final int REQUEST_SELECT_CONTACT = 1;
     private static final int REQUEST_SELECT_CONTACT_PHONE = 2;
     private static final int REQUEST_INSERT_CONTACT = 3;
+    private static final int REQUEST_SELECT_FILE = 4;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -65,11 +67,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Log.d(TAG, "onActivityResult - SelectedContactPhone: " + phoneStr);
                     Toast.makeText(this, "phone: " + phoneStr, Toast.LENGTH_LONG).show();
                 }
+                cursor.close();
             }
-            cursor.close();
-        }else if(requestCode == REQUEST_INSERT_CONTACT && resultCode == RESULT_OK){
+        } else if (requestCode == REQUEST_INSERT_CONTACT && resultCode == RESULT_OK) {
             Toast.makeText(this, "Contact inserted successfully.", Toast.LENGTH_LONG).show();
             // No result back, result callback done by intent handler component already.
+        } else if (requestCode == REQUEST_SELECT_FILE && resultCode == RESULT_OK) {
+            Uri imageUri = data.getData();  // full-size image file
+            // retrieve the thumbnail for use
+            Bitmap imageThumbnail = data.getParcelableExtra("data");
+            if (BuildConfig.DEBUG) {
+                Log.d(TAG, "onActivityResult - selected a photo file: " + imageUri + ", with thumbnail: " + (imageThumbnail != null));  // Unfortunately, it is null.
+            }
         }
     }
 
@@ -114,6 +123,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button_compose_email:
                 composeEmail("2016华山论剑", new String[]{"fengqingyang@huashan.com", "saodiseng@shaolin.com"});
                 break;
+            case R.id.button_select_file:
+                selectFile();
+                break;
+        }
+    }
+
+    private void selectFile() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(intent, REQUEST_SELECT_FILE);
         }
     }
 
