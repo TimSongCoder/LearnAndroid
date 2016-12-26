@@ -168,6 +168,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button_dial_phone:
                 dialPhone("02782330001"); // a fake phone number
                 break;
+            case R.id.button_perform_web_search:
+                searchOnWeb("Michael Jackson");
+                break;
+        }
+    }
+
+    private void searchOnWeb(String query) {
+        Intent intent = new Intent(Intent.ACTION_WEB_SEARCH).putExtra(SearchManager.QUERY, query);
+        if(intent.resolveActivity(getPackageManager())!=null){
+            startActivity(intent);
+        }else{
+            Log.d(TAG, "searchOnWeb: NO APP CAN HANDLE THIS ON YOUR DEVICE:)");
+            Toast.makeText(this, "NO APP CAN HANDLE THIS ON YOUR DEVICE:)", Toast.LENGTH_LONG).show();
         }
     }
 

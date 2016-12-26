@@ -178,6 +178,15 @@
             android:layout_centerHorizontal="true"
             android:text="Dial phone"
             android:onClick="onClick"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_perform_web_search"
+            android:layout_below="@id/button_dial_phone"
+            android:layout_centerHorizontal="true"
+            android:text="Search on web"
+            android:onClick="onClick"/>
     </RelativeLayout>
 
 </ScrollView>
