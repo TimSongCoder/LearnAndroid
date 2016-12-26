@@ -175,6 +175,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button_start_settings:
                 startWifiSettings();
                 break;
+            case R.id.button_send_sms:
+                sendSms("13412345678", "Hello, I am still reinstalling the macOS. I can handle it:)");
+                break;
+        }
+    }
+
+    private void sendSms(String recipient, String text) {
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("smsto:" + recipient)); // Limited the app's who can handle the send action.
+        intent.putExtra("sms_body", text);
+        if(intent.resolveActivity(getPackageManager())!=null){
+            startActivity(intent);
+        }else{
+            Log.d(TAG, "sendSms: NO APP CAN HANDLE THIS ON YOUR DEVICE:)");
+            Toast.makeText(this, "NO APP CAN HANDLE THIS ON YOUR DEVICE:)", Toast.LENGTH_LONG).show();
         }
     }
 

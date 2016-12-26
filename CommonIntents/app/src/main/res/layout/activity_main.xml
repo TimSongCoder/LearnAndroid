@@ -196,6 +196,15 @@
             android:layout_centerHorizontal="true"
             android:text="Start WiFi Settings"
             android:onClick="onClick"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_send_sms"
+            android:layout_below="@id/button_start_settings"
+            android:layout_centerHorizontal="true"
+            android:text="Send sms"
+            android:onClick="onClick"/>
     </RelativeLayout>
 
 </ScrollView>
