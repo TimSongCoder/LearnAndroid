@@ -1,5 +1,6 @@
 package com.example.tim.commonintents;
 
+import android.app.SearchManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -157,6 +158,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button_play_audio_file:
                 playAudioFile();
                 break;
+            case R.id.button_play_media_from_search:
+                playMusicFromSearch("Michael Jackson"); // search for artist name
+                break;
+        }
+    }
+
+    private void playMusicFromSearch(String artist) {
+        Intent intent = new Intent(MediaStore.INTENT_ACTION_MEDIA_PLAY_FROM_SEARCH);
+        intent.putExtra(MediaStore.EXTRA_MEDIA_FOCUS, MediaStore.Audio.Artists.ENTRY_CONTENT_TYPE); // set the search mode
+        intent.putExtra(MediaStore.EXTRA_MEDIA_ARTIST, artist); // set the search mode corresponding value, the artist name to be searched.
+        intent.putExtra(SearchManager.QUERY, artist); // set the unstructured search content for apps/system using old mechanism, required.
+        if(intent.resolveActivity(getPackageManager())!=null){
+            startActivity(intent);
+        }else{
+            Log.d(TAG, "playMusicFromSearch: NO APP CAN HANDLE THIS ON YOUR DEVICE:)");
+            Toast.makeText(this, "NO APP CAN HANDLE THIS ON YOUR DEVICE:)", Toast.LENGTH_LONG).show();
         }
     }
 
