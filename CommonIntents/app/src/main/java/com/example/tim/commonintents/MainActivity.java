@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.actions.NoteIntents;
 import com.google.android.gms.actions.ReserveIntents;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -161,6 +162,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button_play_media_from_search:
                 playMusicFromSearch("Michael Jackson"); // search for artist name
                 break;
+            case R.id.button_create_note:
+                createNote("Use iMac as novice", "Reinstall the macOS, expecting to solve the slow responding problem.");
+                break;
+    private void createNote(String subject, String text) {
+        Intent intent = new Intent(NoteIntents.ACTION_CREATE_NOTE);
+        intent.putExtra(NoteIntents.EXTRA_NAME, subject);
+        intent.putExtra(NoteIntents.EXTRA_TEXT, text);
+        intent.setType("text/plain");
+        if(intent.resolveActivity(getPackageManager())!=null){
+            startActivity(intent);
+        }else{
+            Log.d(TAG, "createNote: NO APP CAN HANDLE THIS ON YOUR DEVICE:)");
+            Toast.makeText(this, "NO APP CAN HANDLE THIS ON YOUR DEVICE:)", Toast.LENGTH_LONG).show();
         }
     }
 

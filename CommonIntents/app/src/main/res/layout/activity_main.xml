@@ -160,6 +160,15 @@
             android:layout_centerHorizontal="true"
             android:onClick="onClick"
             android:text="Search and play music media"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_create_note"
+            android:layout_below="@id/button_play_media_from_search"
+            android:layout_centerHorizontal="true"
+            android:onClick="onClick"
+            android:text="Create note"/>
     </RelativeLayout>
 
 </ScrollView>
