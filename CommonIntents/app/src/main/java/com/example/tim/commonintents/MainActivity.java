@@ -12,6 +12,7 @@ import android.provider.AlarmClock;
 import android.provider.CalendarContract;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -171,6 +172,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button_perform_web_search:
                 searchOnWeb("Michael Jackson");
                 break;
+            case R.id.button_start_settings:
+                startWifiSettings();
+                break;
+        }
+    }
+
+    private void startWifiSettings() {
+        Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
+        if(intent.resolveActivity(getPackageManager())!=null){
+            startActivity(intent);
+        }else{
+            Log.d(TAG, "startWifiSettings: NO APP CAN HANDLE THIS ON YOUR DEVICE:)");
+            Toast.makeText(this, "NO APP CAN HANDLE THIS ON YOUR DEVICE:)", Toast.LENGTH_LONG).show();
         }
     }
 
