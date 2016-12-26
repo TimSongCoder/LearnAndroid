@@ -165,6 +165,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button_create_note:
                 createNote("Use iMac as novice", "Reinstall the macOS, expecting to solve the slow responding problem.");
                 break;
+            case R.id.button_dial_phone:
+                dialPhone("02782330001"); // a fake phone number
+                break;
+        }
+    }
+
+    private void dialPhone(String phoneNum) {
+        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNum)); // ACTION_CALL need CALL_PHONE permission, but without need user to press call button to make the phone call.
+        if(intent.resolveActivity(getPackageManager())!=null){
+            startActivity(intent);
+        }else{
+            Log.d(TAG, "dialPhone: NO APP CAN HANDLE THIS ON YOUR DEVICE:)");
+            Toast.makeText(this, "NO APP CAN HANDLE THIS ON YOUR DEVICE:)", Toast.LENGTH_LONG).show();
+        }
+    }
+
     private void createNote(String subject, String text) {
         Intent intent = new Intent(NoteIntents.ACTION_CREATE_NOTE);
         intent.putExtra(NoteIntents.EXTRA_NAME, subject);

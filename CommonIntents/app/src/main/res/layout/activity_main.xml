@@ -169,6 +169,15 @@
             android:layout_centerHorizontal="true"
             android:onClick="onClick"
             android:text="Create note"/>
+
+        <Button
+            android:id="@+id/button_dial_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/button_create_note"
+            android:layout_centerHorizontal="true"
+            android:text="Dial phone"
+            android:onClick="onClick"/>
     </RelativeLayout>
 
 </ScrollView>
