@@ -178,6 +178,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button_send_sms:
                 sendSms("13412345678", "Hello, I am still reinstalling the macOS. I can handle it:)");
                 break;
+            case R.id.button_load_web_page:
+                loadWebPage("http://cn.bing.com");
+                break;
+        }
+    }
+
+    private void loadWebPage(String url) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+        if(intent.resolveActivity(getPackageManager())!=null){
+            startActivity(intent);
+        }else{
+            Log.d(TAG, "loadWebPage: NO APP CAN HANDLE THIS ON YOUR DEVICE:)");
+            Toast.makeText(this, "NO APP CAN HANDLE THIS ON YOUR DEVICE:)", Toast.LENGTH_LONG).show();
         }
     }
 

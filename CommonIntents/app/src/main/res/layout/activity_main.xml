@@ -205,6 +205,15 @@
             android:layout_centerHorizontal="true"
             android:text="Send sms"
             android:onClick="onClick"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_load_web_page"
+            android:layout_below="@id/button_send_sms"
+            android:layout_centerHorizontal="true"
+            android:text="Load web page"
+            android:onClick="onClick"/>
     </RelativeLayout>
 
 </ScrollView>
