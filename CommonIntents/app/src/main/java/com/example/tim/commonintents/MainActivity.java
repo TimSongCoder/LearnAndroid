@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void sendSms(String recipient, String text) {
-        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        Intent intent = new Intent(Intent.ACTION_SENDTO); // ACTION_SEND usage scenario, who the data is being delivered is not specified.
         intent.setData(Uri.parse("smsto:" + recipient)); // Limited the app's who can handle the send action.
         intent.putExtra("sms_body", text);
         if(intent.resolveActivity(getPackageManager())!=null){
