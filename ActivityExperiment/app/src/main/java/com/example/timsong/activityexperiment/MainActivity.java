@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         onActivityStateChanged(Thread.currentThread().getStackTrace()[2].getMethodName() + " is called." + "\n");
+        // This method is not always invoked, e.g. when I kill the app through the Application Manager on Xiaomi Phone.
+        // While on the same device, it is invoked when I end the app through clear it out in the recent apps list.
     }
 
     // In addition to the 6 core set of callbacks overridden above, onRestart() is important to understand too.
