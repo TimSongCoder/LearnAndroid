@@ -91,13 +91,8 @@ public class MainActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
         onActivityStateChanged(Thread.currentThread().getStackTrace()[2].getMethodName() + " is called.");
 
-        final CheckBox checkedBox = (CheckBox) findViewById(R.id.checked_tv_restore);
-        checkedBox.append("\n Time being killed: " + savedInstanceState.getString(STATE_KILL_TIME));
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                checkedBox.setChecked(savedInstanceState.getBoolean(STATE_KILL_FLAG));
-            }
-        }, 3000);
+        CheckBox checkedBox = (CheckBox) findViewById(R.id.checked_tv_restore);
+        checkedBox.append("\nTime being killed: " + savedInstanceState.getString(STATE_KILL_TIME));
+        checkedBox.setChecked(savedInstanceState.getBoolean(STATE_KILL_FLAG));
     }
 }
