@@ -15,16 +15,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Activity Lifecycle Callbacks"
-        android:textStyle="bold"
-        android:textSize="16sp"/>
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
+
         <TextView
+            android:id="@+id/text_view_lifecycle_callback_record"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/text_view_lifecycle_callback_record"
             android:layout_marginTop="8dp" />
     </ScrollView>
+
+    <CheckBox
+        android:id="@+id/checked_tv_restore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Restore from previous killed instance."
+        android:checked="false" />
 </LinearLayout>

@@ -1,13 +1,19 @@
 package com.example.timsong.activityexperiment;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.CheckBox;
 import android.widget.TextView;
+
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+    private static final String STATE_KILL_FLAG = "app_kill_flag";
+    private static final String STATE_KILL_TIME = "app_kill_time";
     private TextView mTextViewLifecycleRecord;
 
     @Override
@@ -61,5 +67,28 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, recordMsg);
         // Append the recordMsg to the record TextView
         mTextViewLifecycleRecord.append(recordMsg + "\n");
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        onActivityStateChanged(Thread.currentThread().getStackTrace()[2].getMethodName() + " is called.");
+        outState.putBoolean(STATE_KILL_FLAG, true);
+        outState.putString(STATE_KILL_TIME, new Date().toString());
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(final Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        onActivityStateChanged(Thread.currentThread().getStackTrace()[2].getMethodName() + " is called.");
+
+        final CheckBox checkedBox = (CheckBox) findViewById(R.id.checked_tv_restore);
+        checkedBox.append("\n Time being killed: " + savedInstanceState.getString(STATE_KILL_TIME));
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                checkedBox.setChecked(savedInstanceState.getBoolean(STATE_KILL_FLAG));
+            }
+        }, 3000);
     }
 }
