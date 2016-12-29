@@ -73,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
     As my exploration on Xiaomi device, when your activity is overlapped by another one, this method is called
     between onPause() method and onStop() method; when your activity is closed intentionally by user(back pressed, kill the app actively etc.)
      this method is not called.
+
+     Note, when configuration changed and activity recreation, this method and onRestoreInstanceState() will be called.
      */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
