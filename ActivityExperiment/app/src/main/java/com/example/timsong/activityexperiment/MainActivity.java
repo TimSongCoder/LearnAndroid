@@ -69,6 +69,11 @@ public class MainActivity extends AppCompatActivity {
         mTextViewLifecycleRecord.append(recordMsg + "\n");
     }
 
+    /*
+    As my exploration on Xiaomi device, when your activity is overlapped by another one, this method is called
+    between onPause() method and onStop() method; when your activity is closed intentionally by user(back pressed, kill the app actively etc.)
+     this method is not called.
+     */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         onActivityStateChanged(Thread.currentThread().getStackTrace()[2].getMethodName() + " is called.");
@@ -77,6 +82,10 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
     }
 
+    /*
+    This method may not be called even the corresponding onSaveInstanceState() method has been called for many times.
+    This method is designed to handle the unusual death of the activity.
+     */
     @Override
     protected void onRestoreInstanceState(final Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
