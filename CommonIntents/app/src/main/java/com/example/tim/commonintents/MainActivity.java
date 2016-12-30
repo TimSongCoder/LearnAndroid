@@ -181,6 +181,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button_load_web_page:
                 loadWebPage("http://cn.bing.com");
                 break;
+            case R.id.button_start_activity_experiment:
+                Intent intent = new Intent("com.example.timsong.action.ACTIVITY_EXPERIMENT");
+                if(intent.resolveActivity(getPackageManager())!=null){
+                    startActivity(intent);
+                }else{
+                    Log.d(TAG, "activityExperiment: NO APP CAN HANDLE THIS ON YOUR DEVICE:)");
+                    Toast.makeText(this, "NO APP CAN HANDLE THIS ON YOUR DEVICE:)", Toast.LENGTH_LONG).show();
+                }
+                break;
         }
     }
 

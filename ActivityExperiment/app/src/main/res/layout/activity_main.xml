@@ -36,4 +36,11 @@
         android:layout_height="wrap_content"
         android:text="Restore from previous killed instance."
         android:checked="false" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_start_second_activity"
+        android:text="Start SecondActivity"
+        android:onClick="startSecondActivity"/>
 </LinearLayout>

@@ -1,9 +1,11 @@
 package com.example.timsong.activityexperiment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
@@ -13,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private static final String STATE_KILL_FLAG = "app_kill_flag";
-    private static final String STATE_KILL_TIME = "app_kill_time";
+    public static final String STATE_KILL_TIME = "app_kill_time";
     private TextView mTextViewLifecycleRecord;
 
     @Override
@@ -96,5 +98,15 @@ public class MainActivity extends AppCompatActivity {
         CheckBox checkedBox = (CheckBox) findViewById(R.id.checked_tv_restore);
         checkedBox.append("\nTime being killed: " + savedInstanceState.getString(STATE_KILL_TIME));
         checkedBox.setChecked(savedInstanceState.getBoolean(STATE_KILL_FLAG));
+    }
+
+    public void startSecondActivity(View view) {
+        startActivity(new Intent(this, SecondActivity.class));
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        onActivityStateChanged(Thread.currentThread().getStackTrace()[2].getMethodName() + " is called: " + intent.getAction());
     }
 }
