@@ -18,12 +18,25 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="com.example.timsong.action.ACTIVITY_EXPERIMENT" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".SecondActivity" android:label="SecondActivity">
+        <activity
+            android:name=".SecondActivity"
+            android:label="SecondActivity">
             <intent-filter>
                 <action android:name="com.example.timsong.action.SECOND_ACTIVITY" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ThirdActivity"
+            android:label="ThirdActivity"
+            android:allowTaskReparenting="true">
+            <intent-filter>
+                <action android:name="com.example.timsong.action.THIRD_ACTIVITY" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

@@ -43,4 +43,5 @@
         android:id="@+id/button_start_second_activity"
         android:text="Start SecondActivity"
         android:onClick="startSecondActivity"/>
+
 </LinearLayout>

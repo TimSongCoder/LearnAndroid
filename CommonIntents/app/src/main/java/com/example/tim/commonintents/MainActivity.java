@@ -193,6 +193,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button_start_activity_with_flag:
                 startActivityWithFlag(Intent.FLAG_ACTIVITY_NEW_TASK);
                 break;
+            case R.id.button_start_task_reparent_activity:
+                startTaskReparentActivity("com.example.timsong.action.THIRD_ACTIVITY");
+                break;
+        }
+    }
+
+    private void startTaskReparentActivity(String action) {
+        Intent intent = new Intent(action);
+        if(intent.resolveActivity(getPackageManager())!=null){
+            startActivity(intent);
+        }else{
+            Log.d(TAG, "startTaskReparentActivity: NO APP CAN HANDLE THIS ON YOUR DEVICE:)");
+            Toast.makeText(this, "NO APP CAN HANDLE THIS ON YOUR DEVICE:)", Toast.LENGTH_LONG).show();
         }
     }
 
