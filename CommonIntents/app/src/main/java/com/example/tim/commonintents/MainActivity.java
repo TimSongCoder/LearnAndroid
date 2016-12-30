@@ -190,6 +190,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Toast.makeText(this, "NO APP CAN HANDLE THIS ON YOUR DEVICE:)", Toast.LENGTH_LONG).show();
                 }
                 break;
+            case R.id.button_start_activity_with_flag:
+                startActivityWithFlag(Intent.FLAG_ACTIVITY_NEW_TASK);
+                break;
+        }
+    }
+
+    private void startActivityWithFlag(int intentFlag) {
+        Intent intent = new Intent("com.example.timsong.action.SECOND_ACTIVITY");
+        intent.setFlags(intentFlag);
+        if(intent.resolveActivity(getPackageManager())!=null){
+            startActivity(intent);
+        }else{
+            Log.d(TAG, "startActivityWithFlag: NO APP CAN HANDLE THIS ON YOUR DEVICE:)");
+            Toast.makeText(this, "NO APP CAN HANDLE THIS ON YOUR DEVICE:)", Toast.LENGTH_LONG).show();
         }
     }
 

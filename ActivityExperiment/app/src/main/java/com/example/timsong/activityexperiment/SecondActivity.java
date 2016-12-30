@@ -1,5 +1,6 @@
 package com.example.timsong.activityexperiment;
 
+import android.content.Intent;
 import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -36,4 +37,9 @@ public class SecondActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        Log.d("SecondActivity", "onNewIntent is called: " + intent.getAction());
+    }
 }

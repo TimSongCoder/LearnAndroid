@@ -18,4 +18,12 @@
         android:layout_centerHorizontal="true"
         android:id="@+id/textView"
         android:textStyle="bold"/>
+
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:id="@+id/seekBar" />
 </RelativeLayout>
