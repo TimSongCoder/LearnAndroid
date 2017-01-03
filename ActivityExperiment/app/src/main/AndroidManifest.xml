@@ -34,13 +34,18 @@
         <!-- Explore the allowTaskReparenting attribute of the activity, take care the activity and app's behavior. -->
         <activity
             android:name=".ThirdActivity"
-            android:label="ThirdActivity"
-            android:allowTaskReparenting="true">
+            android:allowTaskReparenting="true"
+            android:label="ThirdActivity">
             <intent-filter>
                 <action android:name="com.example.timsong.action.THIRD_ACTIVITY" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".NewDocumentActivity"
+            android:label="NewDocumentActivity"
+            android:launchMode="standard"/>
     </application>
 
 </manifest>

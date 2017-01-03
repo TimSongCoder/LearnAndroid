@@ -14,7 +14,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Activity Lifecycle Callbacks"
+        android:text="Activity Lifecyle Callbacks"
         android:textSize="16sp"
         android:textStyle="bold" />
 
@@ -34,14 +34,34 @@
         android:id="@+id/checked_tv_restore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Restore from previous killed instance."
-        android:checked="false" />
+        android:checked="false"
+        android:text="Restore from previous killed instance." />
 
     <Button
+        android:id="@+id/button_start_second_activity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/button_start_second_activity"
-        android:text="Start SecondActivity"
-        android:onClick="startSecondActivity"/>
+        android:onClick="startSecondActivity"
+        android:text="Start SecondActivity" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_create_new_document"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="createNewDocument"
+            android:text="Create New Document" />
+
+        <CheckBox
+            android:id="@+id/check_box_multiple_task_flag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Flag_Multiple_Task"/>
+    </LinearLayout>
+
 
 </LinearLayout>

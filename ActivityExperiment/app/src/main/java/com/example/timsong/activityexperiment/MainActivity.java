@@ -1,6 +1,7 @@
 package com.example.timsong.activityexperiment;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -16,7 +17,9 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private static final String STATE_KILL_FLAG = "app_kill_flag";
     public static final String STATE_KILL_TIME = "app_kill_time";
+    public static final String DOCUMENT_COUNT = "app_document_count";
     private TextView mTextViewLifecycleRecord;
+    private int mDocumentCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
         onActivityStateChanged(Thread.currentThread().getStackTrace()[2].getMethodName() + " is called.");
         outState.putBoolean(STATE_KILL_FLAG, true);
         outState.putString(STATE_KILL_TIME, new Date().toString());
+        outState.putInt(DOCUMENT_COUNT, mDocumentCount);
         super.onSaveInstanceState(outState);
     }
 
@@ -98,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
         CheckBox checkedBox = (CheckBox) findViewById(R.id.checked_tv_restore);
         checkedBox.append("\nTime being killed: " + savedInstanceState.getString(STATE_KILL_TIME));
         checkedBox.setChecked(savedInstanceState.getBoolean(STATE_KILL_FLAG));
+        mDocumentCount = savedInstanceState.getInt(DOCUMENT_COUNT, -10);
     }
 
     public void startSecondActivity(View view) {
@@ -108,5 +113,23 @@ public class MainActivity extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         onActivityStateChanged(Thread.currentThread().getStackTrace()[2].getMethodName() + " is called: " + intent.getAction());
+    }
+
+    public void createNewDocument(View view) {
+        Intent intent = new Intent(this, NewDocumentActivity.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+        }
+        if(needMultipleTaskFlag()){
+            intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        }
+        intent.putExtra(DOCUMENT_COUNT, ++mDocumentCount);
+        if(intent.resolveActivity(getPackageManager())!=null){
+            startActivity(intent);
+        }
+    }
+
+    private boolean needMultipleTaskFlag() {
+        return ((CheckBox)findViewById(R.id.check_box_multiple_task_flag)).isChecked();
     }
 }
