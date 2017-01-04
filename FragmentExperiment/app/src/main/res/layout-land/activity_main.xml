@@ -5,6 +5,7 @@
     android:orientation="horizontal">
 
     <fragment
+        android:name="com.example.timsong.fragmentexperiment.TitlesFragment"
         android:id="@+id/fragment_titles"
         android:layout_width="0dp"
         android:layout_height="match_parent"

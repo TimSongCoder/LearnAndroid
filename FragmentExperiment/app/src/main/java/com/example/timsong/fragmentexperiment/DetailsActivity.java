@@ -22,7 +22,7 @@ public class DetailsActivity extends AppCompatActivity {
         if(savedInstanceState == null){
             // Initialize and plug in the DetailsFragment.
             DetailsFragment detailsFragment = DetailsFragment.newInstance(getIntent().getIntExtra(Detail_INDEX, 0));
-            getFragmentManager().beginTransaction().add(android.R.id.content, detailsFragment).commit();
+            getSupportFragmentManager().beginTransaction().add(android.R.id.content, detailsFragment).commit();
         }
     }
 }
