@@ -24,5 +24,9 @@ public class DetailsActivity extends AppCompatActivity {
             DetailsFragment detailsFragment = DetailsFragment.newInstance(getIntent().getIntExtra(Detail_INDEX, 0));
             getSupportFragmentManager().beginTransaction().add(android.R.id.content, detailsFragment).commit();
         }
+
+        if(getSupportActionBar()!=null){
+            getSupportActionBar().setTitle(Shakespeare.TITLES[getIntent().getIntExtra(Detail_INDEX, 0)]);
+        }
     }
 }

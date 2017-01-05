@@ -42,7 +42,7 @@ public class DetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ScrollView scrollView = new ScrollView(getActivity());
         TextView textView = new TextView(getActivity());
-        int padding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getActivity().getResources().getDisplayMetrics());
+        int padding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16, getActivity().getResources().getDisplayMetrics());
         textView.setPadding(padding, padding, padding, padding);
         scrollView.addView(textView);
 
