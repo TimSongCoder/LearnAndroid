@@ -5,11 +5,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
-import android.telecom.Call;
+import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 /**
  * Created by timsong on 2017/1/4.
@@ -17,6 +17,7 @@ import android.widget.ListView;
 
 public class TitlesFragment extends ListFragment {
     private static final java.lang.String CURRENT_CHOICE_POSITION = "current_title_position";
+    private static final String TAG = "TitlesFragment";
     boolean mDualPane;
     int mCurCheckPosition;
 
@@ -32,18 +33,6 @@ public class TitlesFragment extends ListFragment {
         // Check to see if we can use dual-pane mode.
         View detailsContainer = getActivity().findViewById(R.id.frame_layout_details);
         mDualPane = detailsContainer != null && detailsContainer.getVisibility() == View.VISIBLE;
-
-        if (savedInstanceState != null) {
-            // Restore last state for checked position.
-            mCurCheckPosition = savedInstanceState.getInt(CURRENT_CHOICE_POSITION, 0);
-        }
-
-        if (mDualPane) {
-            // In dual-pane mode, the list view highlights the selected item.
-            getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-            // Make sure our UI is in the correct state.
-            showDetails(mCurCheckPosition);
-        }
     }
 
     @Override
@@ -60,10 +49,12 @@ public class TitlesFragment extends ListFragment {
      * @param selectedPosition the position of the selected item in the title list.
      */
     private void showDetails(int selectedPosition) {
+        Toast.makeText(getActivity(), "SelectedPosition: " + selectedPosition, Toast.LENGTH_LONG).show();
         mCurCheckPosition = selectedPosition;
 
         if (mDualPane) {
             // Display the content in the same page with enough room.
+            getListView().setSelection(selectedPosition);
             getListView().setItemChecked(selectedPosition, true);  // only valid when choice mode has been set appropriately.
 
             // Check what fragment is currently shown, replace if needed.
@@ -90,5 +81,25 @@ public class TitlesFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         showDetails(position);
+    }
+
+    /**
+     * This method get being called after onActivityCreated, so you need override the system restored view state here instead.
+     * @param savedInstanceState
+     */
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        Log.d(TAG, "onViewStateRestored IS CALLED.");
+        // Restore last state for checked position.
+        if (savedInstanceState != null) {
+            mCurCheckPosition = savedInstanceState.getInt(CURRENT_CHOICE_POSITION, 0);
+        }
+        if (mDualPane) {
+            // In dual-pane mode, the list view highlights the selected item.
+            getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+            // Make sure our UI is in the correct state.
+            showDetails(mCurCheckPosition);
+        }
     }
 }
