@@ -15,12 +15,16 @@ import android.util.Log;
 import android.provider.ContactsContract.Contacts;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ListView;
+import android.widget.SearchView;
 
 /**
  * Created by timsong on 2017/1/5.
  */
 
-public class ContactsFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class ContactsFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>, SearchView.OnQueryTextListener {
 
     private static final int CONTACTS_LOADER_ID = 0;
     private static final String TAG = "ContactsFragment";
@@ -97,6 +101,33 @@ public class ContactsFragment extends ListFragment implements LoaderManager.Load
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // Place an action bar item for searching contacts.
-        
+        MenuItem item = menu.add("Search");
+        item.setIcon(android.R.drawable.ic_menu_search);
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        SearchView sv = new SearchView(getActivity());
+        sv.setOnQueryTextListener(this);
+        item.setActionView(sv);
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return true;
+        /*
+        Return true, indicating the query submit has been handled by this listener;
+        otherwise, it will be handled by the SearchView with default action.
+        */
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        // Handle this event here. Update the query text, and restart the contacts query loader.
+        mQueryText = TextUtils.isEmpty(newText)? null : newText;
+        getLoaderManager().restartLoader(CONTACTS_LOADER_ID, null, this);
+        return true;
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        Log.d(TAG, "onListItemClick, POSITION: " + position);
     }
 }
