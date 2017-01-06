@@ -18,7 +18,8 @@
 
         <service
             android:name=".ExampleIntentService"
-            android:exported="false" />
+            android:exported="false"
+            android:description="@string/example_intent_service_description"/>
     </application>
 
 </manifest>

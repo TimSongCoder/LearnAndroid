@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ServiceDemo</string>
+    <string name="example_intent_service_description">Just for demo usage, would stop itself if service completed.</string>
 </resources>
