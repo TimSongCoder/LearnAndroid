@@ -17,16 +17,16 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:text="Dashboard"
-        android:textStyle="bold"
-        android:textSize="16sp"/>
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
     <TableLayout
         android:id="@+id/table_layout_statistics"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/text_view_dashboard"
-        android:stretchColumns="1"
-        android:layout_marginBottom="@dimen/activity_vertical_margin">
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:stretchColumns="1">
 
         <TableRow>
 
@@ -43,13 +43,37 @@
                 android:gravity="center"
                 android:text="0" />
         </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/text_view_random_request"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="GetRandomFromLocalService" />
+
+            <TextView
+                android:id="@+id/text_view_random_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="" />
+        </TableRow>
     </TableLayout>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/button_start_intent_service"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/table_layout_statistics"
         android:onClick="startIntentService"
         android:text="Start IntentService" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_request_random_num"
+        android:text="Get Random Num From LocalService"
+        android:onClick="getRandomNumFromLocalService"
+        android:layout_below="@id/button_start_intent_service"/>
 </RelativeLayout>

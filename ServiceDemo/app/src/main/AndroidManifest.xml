@@ -18,8 +18,12 @@
 
         <service
             android:name=".ExampleIntentService"
-            android:exported="false"
-            android:description="@string/example_intent_service_description"/>
+            android:description="@string/example_intent_service_description"
+            android:exported="false" />
+        <service
+            android:name=".LocalService"
+            android:enabled="true"
+            android:exported="false"></service>
     </application>
 
 </manifest>
