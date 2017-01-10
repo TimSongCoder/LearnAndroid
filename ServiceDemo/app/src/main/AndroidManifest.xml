@@ -23,7 +23,11 @@
         <service
             android:name=".LocalService"
             android:enabled="true"
-            android:exported="false"></service>
+            android:exported="false" />
+        <service
+            android:name=".MessengerService"
+            android:enabled="true"
+            android:exported="true" />
     </application>
 
 </manifest>

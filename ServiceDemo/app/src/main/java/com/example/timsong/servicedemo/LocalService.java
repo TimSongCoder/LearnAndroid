@@ -4,10 +4,12 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 
 import java.util.Random;
 
 public class LocalService extends Service {
+    private static final String TAG = "LocalService";
     private IBinder mBinder = new LocalBinder();
     private Random mRandomGenerator = new Random();
 
@@ -34,5 +36,11 @@ public class LocalService extends Service {
      */
     public int getRandomNum(){
         return mRandomGenerator.nextInt(100);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy is called.");
     }
 }

@@ -1,13 +1,21 @@
 package com.example.tim.commonintents;
 
 import android.app.SearchManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
 import android.provider.AlarmClock;
 import android.provider.CalendarContract;
 import android.provider.ContactsContract;
@@ -33,6 +41,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final int REQUEST_SELECT_FILE = 4;
     private static final int REQUEST_OPEN_FILE = 5;
     private static final int REQUEST_GOOGLE_PLAY_SERVICE_ERROR_FIX = 6;
+    private boolean isDonateServiceBound;
+    private DonateIncomingMsgHandler mDonateIncomingMsgHandler;
+    private ServiceConnection mDonateServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            Log.d(TAG, "onServiceConnected is called.");
+            mDonateServiceOutgoingMessenger = new Messenger(service);
+
+            isDonateServiceBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            Log.d(TAG, "onServiceDisconnected is called.");
+            isDonateServiceBound = false;
+        }
+    };
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -90,10 +115,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (BuildConfig.DEBUG) {
                 Log.d(TAG, "onActivityResult - selected a photo file: " + imageUri + ", with thumbnail: " + (imageThumbnail != null));  // Unfortunately, it is null.
             }
-        }else if(requestCode == REQUEST_OPEN_FILE && resultCode == RESULT_OK){
+        } else if (requestCode == REQUEST_OPEN_FILE && resultCode == RESULT_OK) {
             // single file, open file uri stored in data; while multiple files stored in clipdata
             Uri fileOpenUri = data.getData();  // long term access permission uri
-            if(BuildConfig.DEBUG){
+            if (BuildConfig.DEBUG) {
                 Log.d(TAG, "onActivityResult - OPEN FILE: " + fileOpenUri);
             }
         }
@@ -103,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT){
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
             findViewById(R.id.button_create_timer).setEnabled(false);
             findViewById(R.id.button_show_alarms).setEnabled(false);
             findViewById(R.id.button_open_file).setEnabled(false);
@@ -183,9 +208,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.button_start_activity_experiment:
                 Intent intent = new Intent("com.example.timsong.action.ACTIVITY_EXPERIMENT");
-                if(intent.resolveActivity(getPackageManager())!=null){
+                if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivity(intent);
-                }else{
+                } else {
                     Log.d(TAG, "activityExperiment: NO APP CAN HANDLE THIS ON YOUR DEVICE:)");
                     Toast.makeText(this, "NO APP CAN HANDLE THIS ON YOUR DEVICE:)", Toast.LENGTH_LONG).show();
                 }
@@ -196,14 +221,77 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button_start_task_reparent_activity:
                 startTaskReparentActivity("com.example.timsong.action.THIRD_ACTIVITY");
                 break;
+            case R.id.button_donate:
+                donate(5);
+                break;
+        }
+    }
+
+    /**
+     * Donates mocking for demo use.
+     * Used to explore the inter-process communication through Messenger API.
+     */
+    private void donate(int money) {
+        if (isDonateServiceBound) {
+            Message message = Message.obtain();
+            message.what = 2; // Value need to be exactly corresponding with donate service.
+            message.arg1 = money;
+            if (mDonateIncomingMsgHandler == null) {
+                mDonateIncomingMsgHandler = new DonateIncomingMsgHandler();
+                mDonateServiceIncomingMessenger = new Messenger(mDonateIncomingMsgHandler);
+            }
+            message.replyTo = mDonateServiceIncomingMessenger;
+            try {
+                mDonateServiceOutgoingMessenger.send(message);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Toast.makeText(this, "Service is not bound.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Intent donateServiceIntent = new Intent();
+        donateServiceIntent.setClassName("com.example.timsong.servicedemo", "MessengerService");
+        boolean mBindResult = bindService(donateServiceIntent, mDonateServiceConnection, Context.BIND_AUTO_CREATE);
+        Log.d(TAG, "BIND DONATE SERVICE RESULT: " + mBindResult);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (isDonateServiceBound) {
+            unbindService(mDonateServiceConnection);
+            isDonateServiceBound = false;
+            mDonateIncomingMsgHandler = null;
+            mDonateServiceIncomingMessenger = null;
+        }
+    }
+
+    private Messenger mDonateServiceOutgoingMessenger, mDonateServiceIncomingMessenger;
+
+    public class DonateIncomingMsgHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 3:
+                    // Donate successfully as per donate service's reply.
+                    Toast.makeText(getApplicationContext(), "Congratulations, donation succeeded.", Toast.LENGTH_LONG).show();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
     private void startTaskReparentActivity(String action) {
         Intent intent = new Intent(action);
-        if(intent.resolveActivity(getPackageManager())!=null){
+        if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
-        }else{
+        } else {
             Log.d(TAG, "startTaskReparentActivity: NO APP CAN HANDLE THIS ON YOUR DEVICE:)");
             Toast.makeText(this, "NO APP CAN HANDLE THIS ON YOUR DEVICE:)", Toast.LENGTH_LONG).show();
         }
@@ -212,9 +300,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void startActivityWithFlag(int intentFlag) {
         Intent intent = new Intent("com.example.timsong.action.SECOND_ACTIVITY");
         intent.setFlags(intentFlag);
-        if(intent.resolveActivity(getPackageManager())!=null){
+        if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
-        }else{
+        } else {
             Log.d(TAG, "startActivityWithFlag: NO APP CAN HANDLE THIS ON YOUR DEVICE:)");
             Toast.makeText(this, "NO APP CAN HANDLE THIS ON YOUR DEVICE:)", Toast.LENGTH_LONG).show();
         }
@@ -223,9 +311,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void loadWebPage(String url) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse(url));
-        if(intent.resolveActivity(getPackageManager())!=null){
+        if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
-        }else{
+        } else {
             Log.d(TAG, "loadWebPage: NO APP CAN HANDLE THIS ON YOUR DEVICE:)");
             Toast.makeText(this, "NO APP CAN HANDLE THIS ON YOUR DEVICE:)", Toast.LENGTH_LONG).show();
         }
@@ -235,9 +323,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent intent = new Intent(Intent.ACTION_SENDTO); // ACTION_SEND usage scenario, who the data is being delivered is not specified.
         intent.setData(Uri.parse("smsto:" + recipient)); // Limited the app's who can handle the send action.
         intent.putExtra("sms_body", text);
-        if(intent.resolveActivity(getPackageManager())!=null){
+        if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
-        }else{
+        } else {
             Log.d(TAG, "sendSms: NO APP CAN HANDLE THIS ON YOUR DEVICE:)");
             Toast.makeText(this, "NO APP CAN HANDLE THIS ON YOUR DEVICE:)", Toast.LENGTH_LONG).show();
         }
@@ -245,9 +333,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void startWifiSettings() {
         Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
-        if(intent.resolveActivity(getPackageManager())!=null){
+        if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
-        }else{
+        } else {
             Log.d(TAG, "startWifiSettings: NO APP CAN HANDLE THIS ON YOUR DEVICE:)");
             Toast.makeText(this, "NO APP CAN HANDLE THIS ON YOUR DEVICE:)", Toast.LENGTH_LONG).show();
         }
@@ -255,9 +343,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void searchOnWeb(String query) {
         Intent intent = new Intent(Intent.ACTION_WEB_SEARCH).putExtra(SearchManager.QUERY, query);
-        if(intent.resolveActivity(getPackageManager())!=null){
+        if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
-        }else{
+        } else {
             Log.d(TAG, "searchOnWeb: NO APP CAN HANDLE THIS ON YOUR DEVICE:)");
             Toast.makeText(this, "NO APP CAN HANDLE THIS ON YOUR DEVICE:)", Toast.LENGTH_LONG).show();
         }
@@ -265,9 +353,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void dialPhone(String phoneNum) {
         Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNum)); // ACTION_CALL need CALL_PHONE permission, but without need user to press call button to make the phone call.
-        if(intent.resolveActivity(getPackageManager())!=null){
+        if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
-        }else{
+        } else {
             Log.d(TAG, "dialPhone: NO APP CAN HANDLE THIS ON YOUR DEVICE:)");
             Toast.makeText(this, "NO APP CAN HANDLE THIS ON YOUR DEVICE:)", Toast.LENGTH_LONG).show();
         }
@@ -278,9 +366,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         intent.putExtra(NoteIntents.EXTRA_NAME, subject);
         intent.putExtra(NoteIntents.EXTRA_TEXT, text);
         intent.setType("text/plain");
-        if(intent.resolveActivity(getPackageManager())!=null){
+        if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
-        }else{
+        } else {
             Log.d(TAG, "createNote: NO APP CAN HANDLE THIS ON YOUR DEVICE:)");
             Toast.makeText(this, "NO APP CAN HANDLE THIS ON YOUR DEVICE:)", Toast.LENGTH_LONG).show();
         }
@@ -291,9 +379,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         intent.putExtra(MediaStore.EXTRA_MEDIA_FOCUS, MediaStore.Audio.Artists.ENTRY_CONTENT_TYPE); // set the search mode
         intent.putExtra(MediaStore.EXTRA_MEDIA_ARTIST, artist); // set the search mode corresponding value, the artist name to be searched.
         intent.putExtra(SearchManager.QUERY, artist); // set the unstructured search content for apps/system using old mechanism, required.
-        if(intent.resolveActivity(getPackageManager())!=null){
+        if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
-        }else{
+        } else {
             Log.d(TAG, "playMusicFromSearch: NO APP CAN HANDLE THIS ON YOUR DEVICE:)");
             Toast.makeText(this, "NO APP CAN HANDLE THIS ON YOUR DEVICE:)", Toast.LENGTH_LONG).show();
         }
@@ -302,30 +390,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void playAudioFile() {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://ia800301.us.archive.org/14/items/art_of_war_librivox/art_of_war_01-02_sun_tzu.mp3"));
         intent.setType("audio/*");  // without this, it always resolved to browser
-        if(intent.resolveActivity(getPackageManager())!=null){
+        if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
         }
     }
 
     private void showLocationOnMap() {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:47.6,-122.3?z=10"));
-        if(intent.resolveActivity(getPackageManager())!=null){
+        if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
-        }else{
+        } else {
             Toast.makeText(this, "No app can handle your request, unfortunately.", Toast.LENGTH_LONG).show();
         }
     }
 
     private void reserveCar() {
         int verifyGooglePlayServicesAvailableResult = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this);
-        if(verifyGooglePlayServicesAvailableResult != ConnectionResult.SUCCESS){
+        if (verifyGooglePlayServicesAvailableResult != ConnectionResult.SUCCESS) {
             Log.d(TAG, "GOOGLE API IS NOT AVAILABLE: " + verifyGooglePlayServicesAvailableResult);
             GoogleApiAvailability.getInstance().getErrorDialog(this, verifyGooglePlayServicesAvailableResult, REQUEST_GOOGLE_PLAY_SERVICE_ERROR_FIX, null).show();
         }
         Intent intent = new Intent(ReserveIntents.ACTION_RESERVE_TAXI_RESERVATION); // NEED GOOGLE APIS/SERVICE SUPPORT
-        if(intent.resolveActivity(getPackageManager())!=null){
+        if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
-        }else{
+        } else {
             Toast.makeText(this, "No app can handle this, unfortunately", Toast.LENGTH_LONG).show();
         }
     }
