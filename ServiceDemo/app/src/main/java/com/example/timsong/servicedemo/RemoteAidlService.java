@@ -9,6 +9,7 @@ import android.util.Log;
 
 public class RemoteAidlService extends Service {
     private static final String TAG = "RemoteAidlService";
+    private RemoteAidlCallback mRemoteServiceDestoryCallback;
 
     public RemoteAidlService() {
     }
@@ -16,7 +17,7 @@ public class RemoteAidlService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         Log.d(TAG, "onBind is called: " + intent);
-        return new IRemoteAidlInterface.Stub(){
+        return new IRemoteAidlInterface.Stub() {
             @Override
             public int getPid() throws RemoteException {
                 return Process.myPid();
@@ -24,7 +25,12 @@ public class RemoteAidlService extends Service {
 
             @Override
             public void serve(String param) throws RemoteException {
-                Log.d(TAG, "serve() is called with param: " + param + " in thread: " + Thread.currentThread());
+                Log.d(TAG, "IRemoteAidlInterface.serve() is called with param: " + param + " in thread: " + Thread.currentThread());
+            }
+
+            @Override
+            public void registerServiceDestroyCallback(RemoteAidlCallback callback) throws RemoteException {
+                mRemoteServiceDestoryCallback = callback;
             }
         };
     }
@@ -33,6 +39,11 @@ public class RemoteAidlService extends Service {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy is called, in the thread: " + Thread.currentThread());
+        try {
+            mRemoteServiceDestoryCallback.onServiceDestroyed();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
 }

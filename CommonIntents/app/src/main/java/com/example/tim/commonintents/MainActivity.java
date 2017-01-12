@@ -28,6 +28,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.timsong.servicedemo.IRemoteAidlInterface;
+import com.example.timsong.servicedemo.RemoteAidlCallback;
 import com.google.android.gms.actions.NoteIntents;
 import com.google.android.gms.actions.ReserveIntents;
 import com.google.android.gms.common.ConnectionResult;
@@ -242,6 +243,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 IRemoteAidlInterface remoteAidlInterface = IRemoteAidlInterface.Stub.asInterface(service);
                 // Use the function defined in remote aidl interface.
                 try {
+                    remoteAidlInterface.registerServiceDestroyCallback(new RemoteAidlCallback.Stub(){
+                        @Override
+                        public void onServiceDestroyed() throws RemoteException {
+                            Log.d(TAG, "RemoteAidlCallback.onServiceDestroyed is called, " + Thread.currentThread());
+                        }
+                    });
                     Toast.makeText(getApplicationContext(), "RemoteAidlServicePid: " + remoteAidlInterface.getPid(), Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "RemoteAidlService: pid= " + remoteAidlInterface.getPid());
                 } catch (RemoteException e) {
