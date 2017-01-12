@@ -255,7 +255,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onStart() {
         super.onStart();
         Intent donateServiceIntent = new Intent();
-        donateServiceIntent.setClassName("com.example.timsong.servicedemo", "MessengerService");
+        donateServiceIntent.setClassName("com.example.timsong.servicedemo", "com.example.timsong.servicedemo.MessengerService");
+        // The class name need be fully qualified. The package name parameter was just enough to specify the intended application.
         boolean mBindResult = bindService(donateServiceIntent, mDonateServiceConnection, Context.BIND_AUTO_CREATE);
         Log.d(TAG, "BIND DONATE SERVICE RESULT: " + mBindResult);
     }
