@@ -27,6 +27,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.timsong.servicedemo.IRemoteAidlInterface;
 import com.google.android.gms.actions.NoteIntents;
 import com.google.android.gms.actions.ReserveIntents;
 import com.google.android.gms.common.ConnectionResult;
@@ -224,7 +225,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button_donate:
                 donate(5);
                 break;
+            case R.id.button_use_aidl_service:
+                useAidlService();
+                break;
         }
+    }
+
+    private void useAidlService() {
+        // Bind to a remote service.
+        Intent intent = new Intent();
+        intent.setClassName("com.example.timsong.servicedemo", "com.example.timsong.servicedemo.RemoteAidlService");
+        ServiceConnection aidlServiceConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                // Cast and get the reference of the remote aidl interface.
+                IRemoteAidlInterface remoteAidlInterface = IRemoteAidlInterface.Stub.asInterface(service);
+                // Use the function defined in remote aidl interface.
+                try {
+                    Toast.makeText(getApplicationContext(), "RemoteAidlServicePid: " + remoteAidlInterface.getPid(), Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "RemoteAidlService: pid= " + remoteAidlInterface.getPid());
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }finally {
+                    // Unbind the remote service, observe the remote service's life state.
+                    unbindService(this);
+                }
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                Log.d(TAG, "onServiceDisconnected: " + name);
+            }
+        };
+        bindService(intent, aidlServiceConnection, Context.BIND_AUTO_CREATE);
     }
 
     /**

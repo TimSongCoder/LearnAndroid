@@ -28,6 +28,10 @@
             android:name=".MessengerService"
             android:enabled="true"
             android:exported="true" />
+        <service
+            android:name=".RemoteAidlService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

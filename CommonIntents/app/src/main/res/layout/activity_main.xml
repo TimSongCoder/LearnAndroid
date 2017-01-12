@@ -246,10 +246,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/button_donate"
-            android:text="DONATE"
+            android:text="DONATE WITH MESSENGER"
             android:onClick="onClick"
             android:layout_below="@id/button_start_task_reparent_activity"
             android:layout_centerHorizontal="true"/>
+
+        <Button android:id="@+id/button_use_aidl_service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/button_donate"
+            android:onClick="onClick"
+            android:text="Use AIDL Service"/>
     </RelativeLayout>
 
 </ScrollView>

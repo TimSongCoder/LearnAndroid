@@ -64,4 +64,9 @@ public class MessengerService extends Service {
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy is called.");
+    }
 }
