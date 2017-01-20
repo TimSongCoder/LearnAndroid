@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
+import android.os.ParcelFileDescriptor;
 import android.os.RemoteException;
 import android.provider.AlarmClock;
 import android.provider.CalendarContract;
@@ -26,6 +28,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.timsong.servicedemo.IRemoteAidlInterface;
@@ -34,6 +37,10 @@ import com.google.android.gms.actions.NoteIntents;
 import com.google.android.gms.actions.ReserveIntents;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+
+import java.io.FileDescriptor;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -125,7 +132,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Log.d(TAG, "onActivityResult - OPEN FILE: " + fileOpenUri);
             }
             dumpFileMetadata(fileOpenUri);
+            showImageFile(fileOpenUri);
         }
+    }
+
+    private void showImageFile(Uri fileOpenUri) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        ImageView imageView = new ImageView(this);
+        ParcelFileDescriptor parcelFileDescriptor = null;
+        try {
+            parcelFileDescriptor = getContentResolver().openFileDescriptor(fileOpenUri, "r");
+            FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+            Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+            // TODO Should fetch the file content in background thread, e.g use AsyncTask.
+            imageView.setImageBitmap(image);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                parcelFileDescriptor.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        builder.setView(imageView);
+        builder.create().show(); // Succeeded.
     }
 
     private void dumpFileMetadata(Uri fileOpenUri) {
@@ -217,7 +248,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 selectFile();
                 break;
             case R.id.button_open_file:
-                openFile();
+                openImageFile();
                 break;
             case R.id.button_reserve_car:
                 reserveCar();  // local action
@@ -500,7 +531,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void openFile() {
+    private void openImageFile() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
