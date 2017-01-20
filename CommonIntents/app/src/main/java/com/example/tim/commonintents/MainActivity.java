@@ -20,6 +20,7 @@ import android.provider.AlarmClock;
 import android.provider.CalendarContract;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -123,7 +124,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (BuildConfig.DEBUG) {
                 Log.d(TAG, "onActivityResult - OPEN FILE: " + fileOpenUri);
             }
+            dumpFileMetadata(fileOpenUri);
         }
+    }
+
+    private void dumpFileMetadata(Uri fileOpenUri) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            Cursor cursor = getContentResolver().query(fileOpenUri, null, null, null, null);
+            try {
+                if (cursor != null && cursor.moveToNext()) {
+                    String displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                    int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
+                    String size = null;
+                    if (!cursor.isNull(sizeIndex)) {
+                        size = cursor.getString(sizeIndex);
+                    }
+                    if (BuildConfig.DEBUG) {
+                        Log.i(TAG, "FILE DISPLAY NAME: " + displayName + ", SIZE: " + size);
+                    }
+                    Toast.makeText(this, "FILE DISPLAY NAME: " + displayName + ", \nSIZE: " + size, Toast.LENGTH_SHORT).show();
+                }
+            } finally {
+                cursor.close();
+            }
+        } else {
+            // Resources released automatically. New feature from Java 7.
+            try (Cursor cursor = getContentResolver().query(fileOpenUri, null, null, null, null)) {
+                if (cursor != null && cursor.moveToNext()) {
+                    String displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                    int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
+                    String size = null;
+                    if (!cursor.isNull(sizeIndex)) {
+                        size = cursor.getString(sizeIndex);
+                    }
+                    if (BuildConfig.DEBUG) {
+                        Log.i(TAG, "FILE DISPLAY NAME: " + displayName + ", SIZE: " + size);
+                    }
+                    Toast.makeText(this, "FILE DISPLAY NAME: " + displayName + ", \nSIZE: " + size, Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+
     }
 
     @Override
@@ -243,7 +284,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 IRemoteAidlInterface remoteAidlInterface = IRemoteAidlInterface.Stub.asInterface(service);
                 // Use the function defined in remote aidl interface.
                 try {
-                    remoteAidlInterface.registerServiceDestroyCallback(new RemoteAidlCallback.Stub(){
+                    remoteAidlInterface.registerServiceDestroyCallback(new RemoteAidlCallback.Stub() {
                         @Override
                         public void onServiceDestroyed() throws RemoteException {
                             Log.d(TAG, "RemoteAidlCallback.onServiceDestroyed is called, " + Thread.currentThread());
@@ -253,7 +294,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Log.d(TAG, "RemoteAidlService: pid= " + remoteAidlInterface.getPid());
                 } catch (RemoteException e) {
                     e.printStackTrace();
-                }finally {
+                } finally {
                     // Unbind the remote service, observe the remote service's life state.
                     unbindService(this);
                 }
