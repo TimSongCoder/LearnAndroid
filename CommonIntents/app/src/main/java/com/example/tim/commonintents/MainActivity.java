@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final int REQUEST_SELECT_FILE = 4;
     private static final int REQUEST_OPEN_FILE = 5;
     private static final int REQUEST_GOOGLE_PLAY_SERVICE_ERROR_FIX = 6;
+    private static final int REQUEST_CREATE_DOCUMENT = 7;
     private boolean isDonateServiceBound;
     private DonateIncomingMsgHandler mDonateIncomingMsgHandler;
     private ServiceConnection mDonateServiceConnection = new ServiceConnection() {
@@ -133,6 +134,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             dumpFileMetadata(fileOpenUri);
             showImageFile(fileOpenUri);
+        } else if (requestCode == REQUEST_CREATE_DOCUMENT && resultCode == RESULT_OK) {
+            Toast.makeText(this, "Create Doc Successfully, " + data.getData(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -301,6 +304,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button_use_aidl_service:
                 useAidlService();
                 break;
+            case R.id.button_create_document:
+                createDocument("text/plain", "MacNote");
+                break;
+        }
+    }
+
+    private void createDocument(String mimeType, String docTitle) {
+        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        intent.setType(mimeType);
+        intent.putExtra(Intent.EXTRA_TITLE, docTitle);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(intent, REQUEST_CREATE_DOCUMENT);
+        } else {
+            Log.d(TAG, "createDocument: NO APP CAN HANDLE THIS ON YOUR DEVICE:)");
         }
     }
 

@@ -258,6 +258,15 @@
             android:layout_below="@id/button_donate"
             android:onClick="onClick"
             android:text="Use AIDL Service"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_create_document"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/button_use_aidl_service"
+            android:text="Create Document"
+            android:onClick="onClick"/>
     </RelativeLayout>
 
 </ScrollView>
