@@ -9,12 +9,11 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.tim.commonintents.MainActivity"
-    tools:ignore = "HardcodedText">
+    tools:ignore="HardcodedText">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
 
         <Button
             android:id="@+id/button_create_alarm"
@@ -102,73 +101,73 @@
             android:id="@+id/button_compose_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_below="@+id/button_insert_contact"
+            android:layout_centerHorizontal="true"
             android:onClick="onClick"
             android:text="Compose Email" />
 
         <Button
-            android:text="Select A File"
+            android:id="@+id/button_select_file"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/button_compose_email"
             android:layout_centerHorizontal="true"
-            android:id="@+id/button_select_file"
             android:onClick="onClick"
-            android:layout_below="@+id/button_compose_email" />
+            android:text="Select A File" />
 
         <Button
+            android:id="@+id/button_open_file"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/button_select_file"
             android:layout_centerHorizontal="true"
-            android:id="@+id/button_open_file"
             android:onClick="onClick"
             android:text="Open Document" />
 
         <Button
+            android:id="@+id/button_reserve_car"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button_reserve_car"
-            android:onClick="onClick"
-            android:text="Reserve Car"
+            android:layout_below="@id/button_open_file"
             android:layout_centerHorizontal="true"
-            android:layout_below="@id/button_open_file"/>
+            android:onClick="onClick"
+            android:text="Reserve Car" />
 
         <Button
+            android:id="@+id/button_view_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_below="@id/button_reserve_car"
+            android:layout_centerHorizontal="true"
             android:onClick="onClick"
-            android:id="@+id/button_view_location"
             android:text="Show location on map" />
 
         <Button
+            android:id="@+id/button_play_audio_file"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button_play_audio_file"
             android:layout_below="@id/button_view_location"
             android:layout_centerHorizontal="true"
             android:onClick="onClick"
-            android:text="Play audio file"/>
+            android:text="Play audio file" />
 
         <Button
+            android:id="@+id/button_play_media_from_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button_play_media_from_search"
             android:layout_below="@id/button_play_audio_file"
             android:layout_centerHorizontal="true"
             android:onClick="onClick"
-            android:text="Search and play music media"/>
+            android:text="Search and play music media" />
 
         <Button
+            android:id="@+id/button_create_note"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button_create_note"
             android:layout_below="@id/button_play_media_from_search"
             android:layout_centerHorizontal="true"
             android:onClick="onClick"
-            android:text="Create note"/>
+            android:text="Create note" />
 
         <Button
             android:id="@+id/button_dial_phone"
@@ -176,97 +175,107 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/button_create_note"
             android:layout_centerHorizontal="true"
-            android:text="Dial phone"
-            android:onClick="onClick"/>
+            android:onClick="onClick"
+            android:text="Dial phone" />
 
         <Button
+            android:id="@+id/button_perform_web_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button_perform_web_search"
             android:layout_below="@id/button_dial_phone"
             android:layout_centerHorizontal="true"
-            android:text="Search on web"
-            android:onClick="onClick"/>
+            android:onClick="onClick"
+            android:text="Search on web" />
 
         <Button
+            android:id="@+id/button_start_settings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button_start_settings"
             android:layout_below="@id/button_perform_web_search"
             android:layout_centerHorizontal="true"
-            android:text="Start WiFi Settings"
-            android:onClick="onClick"/>
+            android:onClick="onClick"
+            android:text="Start WiFi Settings" />
 
         <Button
+            android:id="@+id/button_send_sms"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button_send_sms"
             android:layout_below="@id/button_start_settings"
             android:layout_centerHorizontal="true"
-            android:text="Send sms"
-            android:onClick="onClick"/>
+            android:onClick="onClick"
+            android:text="Send sms" />
 
         <Button
+            android:id="@+id/button_load_web_page"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button_load_web_page"
             android:layout_below="@id/button_send_sms"
             android:layout_centerHorizontal="true"
-            android:text="Load web page"
-            android:onClick="onClick"/>
+            android:onClick="onClick"
+            android:text="Load web page" />
 
         <Button
+            android:id="@+id/button_start_activity_experiment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button_start_activity_experiment"
             android:layout_below="@id/button_load_web_page"
             android:layout_centerHorizontal="true"
-            android:text="Start ActivityExperiment"
-            android:onClick="onClick"/>
+            android:onClick="onClick"
+            android:text="Start ActivityExperiment" />
 
         <Button
+            android:id="@+id/button_start_activity_with_flag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button_start_activity_with_flag"
             android:layout_below="@id/button_start_activity_experiment"
             android:layout_centerHorizontal="true"
-            android:text="Start Activity With Flag"
-            android:onClick="onClick"/>
+            android:onClick="onClick"
+            android:text="Start Activity With Flag" />
 
         <Button
+            android:id="@+id/button_start_task_reparent_activity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button_start_task_reparent_activity"
             android:layout_below="@id/button_start_activity_with_flag"
             android:layout_centerHorizontal="true"
             android:onClick="onClick"
             android:text="Start Task Reparent Activity" />
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/button_donate"
-            android:text="DONATE WITH MESSENGER"
-            android:onClick="onClick"
-            android:layout_below="@id/button_start_task_reparent_activity"
-            android:layout_centerHorizontal="true"/>
-
-        <Button android:id="@+id/button_use_aidl_service"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/button_start_task_reparent_activity"
             android:layout_centerHorizontal="true"
-            android:layout_below="@id/button_donate"
             android:onClick="onClick"
-            android:text="Use AIDL Service"/>
+            android:text="DONATE WITH MESSENGER" />
 
         <Button
+            android:id="@+id/button_use_aidl_service"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button_create_document"
+            android:layout_below="@id/button_donate"
             android:layout_centerHorizontal="true"
+            android:onClick="onClick"
+            android:text="Use AIDL Service" />
+
+        <Button
+            android:id="@+id/button_create_document"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_below="@id/button_use_aidl_service"
-            android:text="Create Document"
-            android:onClick="onClick"/>
+            android:layout_centerHorizontal="true"
+            android:onClick="onClick"
+            android:text="Create Document" />
+
+        <Button
+            android:id="@+id/button_edit_document"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/button_create_document"
+            android:layout_centerHorizontal="true"
+            android:onClick="onClick"
+            android:text="Edit Document" />
     </RelativeLayout>
 
 </ScrollView>

@@ -40,6 +40,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 
 import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final int REQUEST_OPEN_FILE = 5;
     private static final int REQUEST_GOOGLE_PLAY_SERVICE_ERROR_FIX = 6;
     private static final int REQUEST_CREATE_DOCUMENT = 7;
+    private static final int REQUEST_EDIT_DOCUMENT = 8;
     private boolean isDonateServiceBound;
     private DonateIncomingMsgHandler mDonateIncomingMsgHandler;
     private ServiceConnection mDonateServiceConnection = new ServiceConnection() {
@@ -136,6 +138,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             showImageFile(fileOpenUri);
         } else if (requestCode == REQUEST_CREATE_DOCUMENT && resultCode == RESULT_OK) {
             Toast.makeText(this, "Create Doc Successfully, " + data.getData(), Toast.LENGTH_SHORT).show();
+        } else if (requestCode == REQUEST_EDIT_DOCUMENT && resultCode == RESULT_OK) {
+            ParcelFileDescriptor pfd = null;
+            FileOutputStream fileOutputStream = null;
+            try {
+                pfd = getContentResolver().
+                        openFileDescriptor(data.getData(), "w");
+                fileOutputStream =
+                        new FileOutputStream(pfd.getFileDescriptor());
+                fileOutputStream.write(("Overwritten by Tim at " +
+                        System.currentTimeMillis() + "\n").getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                // Let the document provider know you're done by closing the stream.
+                if (fileOutputStream != null)
+                    try {
+                        fileOutputStream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                if (pfd != null) {
+                    try {
+                        pfd.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
         }
     }
 
@@ -307,13 +338,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button_create_document:
                 createDocument("text/plain", "MacNote");
                 break;
+            case R.id.button_edit_document:
+                editDocument();
+                break;
         }
+    }
+
+    private void editDocument() {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("text/plain");
+        startActivityForResult(intent, REQUEST_EDIT_DOCUMENT);
     }
 
     private void createDocument(String mimeType, String docTitle) {
         Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
         intent.setType(mimeType);
         intent.putExtra(Intent.EXTRA_TITLE, docTitle);
+        intent.putExtra(Intent.EXTRA_TEXT, "Mac behaves better than Windows in some aspects.\nI want to try iphone out for some days.");
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(intent, REQUEST_CREATE_DOCUMENT);
