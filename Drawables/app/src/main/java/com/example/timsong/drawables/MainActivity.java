@@ -47,5 +47,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void onGroupItemClick(MenuItem item) {
         Toast.makeText(this, item.getTitle() + " is clicked.", Toast.LENGTH_SHORT).show();
+        if (item.isCheckable()) {
+            item.setChecked(!item.isChecked());
+            // Change the MenuItem's checked state manually, which is necessary. Note it's only persist for per-session basis, which means it will not be stored after activity destroyed.
+        }
     }
 }
