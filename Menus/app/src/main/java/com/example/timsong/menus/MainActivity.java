@@ -1,7 +1,6 @@
 package com.example.timsong.menus;
 
 import android.app.ListActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.ActionMode;
 import android.view.Menu;
@@ -11,12 +10,12 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.Toast;
-import android.widget.Toolbar;
-
-import java.util.List;
 
 public class MainActivity extends ListActivity {
+
+    ActionMode mActionMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +34,7 @@ public class MainActivity extends ListActivity {
             @Override
             public boolean onCreateActionMode(ActionMode mode, Menu menu) {
                 getMenuInflater().inflate(R.menu.contextual_action_mode_menu, menu);
+                mActionMode = mode;
                 return true;
             }
 
@@ -47,6 +47,8 @@ public class MainActivity extends ListActivity {
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.item_save:
+                        showPopupMenu(findViewById(R.id.item_save));
+                        return true;
                     case R.id.item_like:
                     case R.id.item_dislike:
                         Toast.makeText(MainActivity.this, "action: " + item.getTitle(), Toast.LENGTH_SHORT).show();
@@ -60,6 +62,7 @@ public class MainActivity extends ListActivity {
             @Override
             public void onDestroyActionMode(ActionMode mode) {
                 Toast.makeText(MainActivity.this, mode + " is destroyed.", Toast.LENGTH_SHORT).show();
+                mActionMode = null;
             }
         });
         final ArrayAdapter<CharSequence> listAdapter = ArrayAdapter.createFromResource(this,
@@ -73,5 +76,27 @@ public class MainActivity extends ListActivity {
         });
 
         listView.setAdapter(listAdapter);
+    }
+
+    private void showPopupMenu(View actionView) {
+        PopupMenu popupMenu = new PopupMenu(this, actionView);
+        popupMenu.inflate(R.menu.save_popup_menu);
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.item_save_internal:
+                    case R.id.item_save_sd_card:
+                        Toast.makeText(MainActivity.this, "action: " + item.getTitle(), Toast.LENGTH_SHORT).show();
+                        if (mActionMode != null) {
+                            mActionMode.finish();
+                        }
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+        popupMenu.show();
     }
 }
