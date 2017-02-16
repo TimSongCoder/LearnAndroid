@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="Like" android:icon="@mipmap/ic_launcher" android:id="@+id/item_like"/>
+    <item android:title="Save" android:icon="@android:drawable/ic_menu_save" android:id="@+id/item_save"/>
+    <item android:title="Dislike" android:icon="@android:drawable/ic_menu_delete" android:id="@+id/item_dislike"/>
+</menu>
