@@ -37,4 +37,10 @@
         android:layout_height="wrap_content"
         android:onClick="progressForward"
         android:text="Forward Progress" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="showCustomizedToast"
+        android:text="Show Customized Toast"/>
 </LinearLayout>
