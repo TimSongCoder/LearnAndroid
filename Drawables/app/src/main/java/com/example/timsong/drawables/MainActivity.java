@@ -4,8 +4,9 @@ import android.graphics.drawable.ClipDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.TransitionDrawable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         Toast customizedToast = new Toast(this); // Do not use this constructor unless you need to customize the view.
         customizedToast.setView(toastViewRoot);
         customizedToast.setDuration(Toast.LENGTH_LONG);
+        customizedToast.setGravity(Gravity.END | Gravity.BOTTOM, 0, 150);
         customizedToast.show();
     }
 }
