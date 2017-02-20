@@ -4,11 +4,13 @@ import android.graphics.drawable.ClipDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.TransitionDrawable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -51,5 +53,17 @@ public class MainActivity extends AppCompatActivity {
             item.setChecked(!item.isChecked());
             // Change the MenuItem's checked state manually, which is necessary. Note it's only persist for per-session basis, which means it will not be stored after activity destroyed.
         }
+    }
+
+    public void showCustomizedToast(View view) {
+        View toastViewRoot = getLayoutInflater().inflate(R.layout.custom_toast_layout, null);
+        TextView toastTextView = (TextView) toastViewRoot.findViewById(R.id.toast_text_view);
+        toastTextView.setText("You see? I am customized:)");
+
+        Toast customizedToast = new Toast(this); // Do not use this constructor unless you need to customize the view.
+        customizedToast.setView(toastViewRoot);
+        customizedToast.setDuration(Toast.LENGTH_LONG);
+        customizedToast.setGravity(Gravity.END | Gravity.BOTTOM, 0, 150);
+        customizedToast.show();
     }
 }
