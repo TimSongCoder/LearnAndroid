@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                 }
                 return false;
             case DragEvent.ACTION_DRAG_ENTERED:
+                // TODO Does not know why this tinting does not work yet:)
                 ((ImageView) v).setColorFilter(android.R.color.holo_orange_dark);
                 v.invalidate();
                 return true;
