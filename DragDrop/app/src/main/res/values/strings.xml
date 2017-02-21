@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">DragDrop</string>
+    <string name="bright_blue_tag">BrightBlue</string>
+    <string name="light_blue_tag">LightBlue</string>
+    <string name="dark_green_tag">DarkGreen</string>
+    <string name="light_green_tag">LightGreen</string>
+</resources>
