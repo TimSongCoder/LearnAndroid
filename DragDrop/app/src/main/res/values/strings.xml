@@ -4,4 +4,6 @@
     <string name="light_blue_tag">LightBlue</string>
     <string name="dark_green_tag">DarkGreen</string>
     <string name="light_green_tag">LightGreen</string>
+
+    <string name="function_label">Drag &amp; Drop</string>
 </resources>

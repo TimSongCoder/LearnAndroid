@@ -2,20 +2,23 @@ package com.example.timsong.dragdrop;
 
 import android.content.ClipData;
 import android.content.ClipDescription;
-import android.content.res.Resources;
-import android.graphics.drawable.ClipDrawable;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
-import android.webkit.MimeTypeMap;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.TextSwitcher;
+import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 public class MainActivity extends AppCompatActivity implements View.OnLongClickListener, View.OnDragListener {
 
     private static final String TAG = "MainActivity";
+    private TextSwitcher mTextSwitcher;
+    private CharSequence mOriginalText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,22 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         lightBlueView.setOnDragListener(this);
         darkGreenView.setOnDragListener(this);
         lightGreenView.setOnDragListener(this);
+
+        mTextSwitcher = (TextSwitcher) findViewById(R.id.text_switcher);
+        mOriginalText = getResources().getString(R.string.function_label);
+
+        mTextSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
+            @Override
+            public View makeView() {
+                TextView tv = new TextView(MainActivity.this);
+                tv.setTextSize(20);
+                return tv;
+            }
+        });
+        mTextSwitcher.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left));
+        mTextSwitcher.setOutAnimation(AnimationUtils.loadAnimation(this, android.R.anim.slide_out_right));
+
+        mTextSwitcher.setCurrentText(mOriginalText);
     }
 
     @Override
@@ -81,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                 View dragOriginatedView = rootView.findViewWithTag(droppedData);
 
                 ((ImageView) v).setImageDrawable(((ImageView) dragOriginatedView).getDrawable());
+                mTextSwitcher.setText(mOriginalText + "\n" + v.getTag() + " has been overridden.");
                 return true;
             case DragEvent.ACTION_DRAG_ENDED:
                 ((ImageView) v).setColorFilter(null);
