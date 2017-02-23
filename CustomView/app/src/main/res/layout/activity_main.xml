@@ -26,6 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:hint="Type anything you want here."
-        app:lineColor="@color/colorPrimary"
-        app:lineOffset="5sp" />
+        android:lineSpacingMultiplier="1.25"
+        app:lineColor="@android:color/holo_green_dark"
+        app:lineOffset="3sp" />
 </LinearLayout>
