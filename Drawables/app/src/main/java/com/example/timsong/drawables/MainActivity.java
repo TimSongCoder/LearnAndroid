@@ -11,6 +11,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AnticipateOvershootInterpolator;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -69,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void rotate360(View view) {
-        ObjectAnimator.ofFloat(view, "rotation", 0f, 360f).setDuration(5000).start();
+        ObjectAnimator animator = ObjectAnimator.ofFloat(view, "rotation", 0f, 360f).setDuration(5000);
+        animator.setInterpolator(new AnticipateOvershootInterpolator(2f, 1f));
+        animator.start();
     }
 }
