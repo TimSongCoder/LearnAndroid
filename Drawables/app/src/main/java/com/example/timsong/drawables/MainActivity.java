@@ -11,6 +11,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.view.animation.AnticipateOvershootInterpolator;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -73,5 +74,8 @@ public class MainActivity extends AppCompatActivity {
         ObjectAnimator animator = ObjectAnimator.ofFloat(view, "rotation", 0f, 360f).setDuration(5000);
         animator.setInterpolator(new AnticipateOvershootInterpolator(2f, 1f));
         animator.start();
+
+        // Animate the content of fancy TextView:)
+        findViewById(R.id.text_view_sweep).startAnimation(AnimationUtils.loadAnimation(this, R.anim.hyperspace_jump));
     }
 }
