@@ -1,5 +1,6 @@
 package com.example.timsong.drawables;
 
+import android.animation.ObjectAnimator;
 import android.graphics.drawable.ClipDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
@@ -65,5 +66,9 @@ public class MainActivity extends AppCompatActivity {
         customizedToast.setDuration(Toast.LENGTH_LONG);
         customizedToast.setGravity(Gravity.END | Gravity.BOTTOM, 0, 150);
         customizedToast.show();
+    }
+
+    public void rotate360(View view) {
+        ObjectAnimator.ofFloat(view, "rotation", 0f, 360f).setDuration(5000).start();
     }
 }

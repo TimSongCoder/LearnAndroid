@@ -42,5 +42,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="showCustomizedToast"
-        android:text="Show Customized Toast"/>
+        android:text="Show Customized Toast" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="rotate360"
+        android:text="Rotate Me:)" />
 </LinearLayout>
