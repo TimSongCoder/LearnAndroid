@@ -1,11 +1,14 @@
 package com.example.timsong.drawables;
 
 import android.animation.ObjectAnimator;
+import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.ClipDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.TransitionDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.Menu;
@@ -13,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.AnticipateOvershootInterpolator;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -77,5 +81,10 @@ public class MainActivity extends AppCompatActivity {
 
         // Animate the content of fancy TextView:)
         findViewById(R.id.text_view_sweep).startAnimation(AnimationUtils.loadAnimation(this, R.anim.hyperspace_jump));
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public void animVector(View view) {
+        ((AnimatedVectorDrawable) ((ImageButton) view).getDrawable()).start();
     }
 }

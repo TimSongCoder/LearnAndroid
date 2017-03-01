@@ -1,59 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.timsong.drawables.MainActivity">
 
-    <Button
+    <LinearLayout
+        android:id="@+id/activity_main"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:background="@drawable/my_transition_drawable"
-        android:onClick="transitionDrawable"
-        android:text="Transition Drawable" />
-
-    <TextView
-        android:id="@+id/text_view_sweep"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/my_gradient_ring"
-        android:gravity="center_vertical|right"
-        android:text="Sweep type gradient ring:)" />
-
-    <View
-        android:id="@+id/layerDrawableView"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="@drawable/my_layer_drawable" />
-
-    <Button
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="progressForward"
-        android:text="Forward Progress" />
+        android:orientation="vertical">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="showCustomizedToast"
-        android:text="Show Customized Toast" />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@drawable/my_transition_drawable"
+            android:onClick="transitionDrawable"
+            android:text="Transition Drawable" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="rotate360"
-        android:text="Rotate Me:)" />
+        <TextView
+            android:id="@+id/text_view_sweep"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/my_gradient_ring"
+            android:gravity="center_vertical|right"
+            android:text="Sweep type gradient ring:)" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/ic_launcher"
-        android:tint="#550000ff" />
-</LinearLayout>
+        <View
+            android:id="@+id/layerDrawableView"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="@drawable/my_layer_drawable" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="progressForward"
+            android:text="Forward Progress" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="showCustomizedToast"
+            android:text="Show Customized Toast" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="rotate360"
+            android:text="Rotate Me:)" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_launcher"
+            android:tint="#550000ff" />
+
+        <ImageButton
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:onClick="animVector"
+            android:scaleType="fitXY"
+            android:src="@drawable/anim_vector_drawable" />
+    </LinearLayout>
+</ScrollView>
