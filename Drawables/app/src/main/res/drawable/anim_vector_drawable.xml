@@ -11,7 +11,7 @@
             android:viewportWidth="24">
             <path
                 android:name="root"
-                android:pathData="M4.8,13.4 L9,17.6 M10.4,16.2 L19.6,7"
+                android:pathData="M4.8,13.4 L9,17.6 m0,0 L19.6,7"
                 android:strokeColor="?android:colorControlNormal"
                 android:strokeLineCap="square"
                 android:strokeWidth="2" />
