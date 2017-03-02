@@ -63,10 +63,11 @@
             android:tint="#550000ff" />
 
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_gravity="center_horizontal"
-            android:onClick="animVectorCompat"
-            app:srcCompat="@drawable/anim_vector_compat" />
+            android:onClick="animVector"
+            android:scaleType="fitXY"
+            android:src="@drawable/anim_vector_drawable" />
     </LinearLayout>
 </ScrollView>

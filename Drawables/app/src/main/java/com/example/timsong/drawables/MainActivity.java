@@ -8,7 +8,7 @@ import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
+import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.Menu;
@@ -83,8 +83,14 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.text_view_sweep).startAnimation(AnimationUtils.loadAnimation(this, R.anim.hyperspace_jump));
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void animVector(View view) {
-        ((AnimatedVectorDrawable) ((ImageButton) view).getDrawable()).start();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            ((AnimatedVectorDrawable) ((ImageButton) view).getDrawable()).start();
+        }
+    }
+
+    public void animVectorCompat(View view) {
+        // AnimatedVectorDrawable support library version, not supporting path morphing, path interpolator or path along.
+        ((AnimatedVectorDrawableCompat) ((ImageButton) view).getDrawable()).start();
     }
 }
