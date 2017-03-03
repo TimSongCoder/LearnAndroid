@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,10 +23,33 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "MainActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Verify whether the Hardware Acceleration is enabled or not for a specific view.
+        View buttonForwardProgress = findViewById(R.id.buttonForwardProgress);
+        boolean isHardwareAccelerated = buttonForwardProgress.isHardwareAccelerated();
+        Log.i(TAG, "View.isHardwareAccelerated(): " + isHardwareAccelerated);
+        // Verify the default layer type of the view.
+        int buttonLayerType = buttonForwardProgress.getLayerType();
+        switch (buttonLayerType) {
+            case View.LAYER_TYPE_NONE:
+                Log.i(TAG, "View.getLayerType(): " + "View.LAYER_TYPE_NONE");
+                break;
+            case View.LAYER_TYPE_HARDWARE:
+                Log.i(TAG, "View.getLayerType(): " + "View.LAYER_TYPE_HARDWARE");
+                break;
+            case View.LAYER_TYPE_SOFTWARE:
+                Log.i(TAG, "View.getLayerType(): " + "View.LAYER_TYPE_SOFTWARE");
+                break;
+            default:
+                Log.i(TAG, "View.getLayerType(): " + buttonLayerType);
+                break;
+        }
     }
 
     public void transitionDrawable(View view) {

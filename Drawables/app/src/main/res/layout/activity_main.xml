@@ -39,6 +39,7 @@
             android:background="@drawable/my_layer_drawable" />
 
         <Button
+            android:id="@+id/buttonForwardProgress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="progressForward"
