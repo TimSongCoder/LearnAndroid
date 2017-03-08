@@ -3,8 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/option_media_route"
+        android:icon="@mipmap/ic_launcher"
+        android:title="@string/option_media_route"
+        app:actionProviderClass="android.support.v7.app.MediaRouteActionProvider"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/option_add_record"
         android:icon="@android:drawable/ic_menu_add"
-        android:title="Record"
+        android:title="Add Record"
         app:showAsAction="ifRoom" />
 </menu>

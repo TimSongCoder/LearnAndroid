@@ -9,8 +9,13 @@ import android.provider.MediaStore;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.MediaRouteActionProvider;
+import android.support.v7.app.MediaRouteDiscoveryFragment;
+import android.support.v7.media.MediaControlIntent;
+import android.support.v7.media.MediaRouteSelector;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,6 +36,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private static final String TAG = "MainActivity";
     private CursorAdapter mCursorAdapter;
     private MediaPlayer mMediaPlayer;
+    private MediaRouteSelector mMediaRouteSelector = new MediaRouteSelector.Builder().addControlCategory(MediaControlIntent.CATEGORY_REMOTE_PLAYBACK).build();
+    ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +61,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 playAudio(itemId);
             }
         });
+        MediaRouteDiscoveryFragment mediaRouteDiscoveryFragment = new MediaRouteDiscoveryFragment();
+        mediaRouteDiscoveryFragment.setRouteSelector(mMediaRouteSelector);
+        getSupportFragmentManager().beginTransaction().add(mediaRouteDiscoveryFragment, "MediaRouteDiscoveryFragment").commit();
     }
 
     private void playAudio(long itemId) {
@@ -122,7 +132,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_activity_options_menu, menu);
-        return super.onCreateOptionsMenu(menu);
+        MenuItem menuItem = menu.findItem(R.id.option_media_route);
+        MediaRouteActionProvider mediaRouteActionProvider = (MediaRouteActionProvider) MenuItemCompat.getActionProvider(menuItem);
+        // Attach a RouteSelector to the MenuItem associated ActionProvider.
+        mediaRouteActionProvider.setRouteSelector(mMediaRouteSelector);
+        return true;
     }
 
     @Override
