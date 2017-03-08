@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">AudioDemo</string>
+    <string name="list_empty_text">No accessible audio resources on your device.</string>
+</resources>
