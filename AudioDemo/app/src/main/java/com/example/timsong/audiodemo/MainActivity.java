@@ -12,6 +12,8 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CursorAdapter;
@@ -115,5 +117,26 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public boolean onError(MediaPlayer mp, int what, int extra) {
         Log.e(TAG, "MediaPlayer.onError: what," + what + "; extra, " + extra);
         return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_activity_options_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.option_add_record:
+                showRecordDialog();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void showRecordDialog() {
+        new AddRecordFragment().show(getSupportFragmentManager(), "AddRecordFragment");
     }
 }
