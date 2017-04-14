@@ -18,7 +18,8 @@
         </activity>
         <!-- Android system automatically adds the Up button '<-' to the standard action bar.-->
         <activity android:name=".DisplayMessageActivity"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.AppCompat.Dialog">
             <!-- Support API15 and lower devices. -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
