@@ -1,6 +1,7 @@
 package com.example.myfirstapp;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -24,5 +25,15 @@ public class DisplayMessageActivity extends AppCompatActivity {
         // Capture the TextView to display message string.
         TextView textView = (TextView) findViewById(R.id.textView);
         textView.setText(message);
+
+        final int textCount = message.length();
+        // To try the setResult() API out.
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setResult(textCount);
+                finish();
+            }
+        }, 3000);
     }
 }

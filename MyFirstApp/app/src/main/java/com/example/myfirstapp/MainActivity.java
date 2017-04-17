@@ -5,12 +5,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     /* It's a good practice to define keys for intent extras using your app's package name as prefix.
        This ensures the keys are unique, in case your app interacts other apps.
      */
     public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
+
+    public static final int REQUEST_MSG_COUNT = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +33,20 @@ public class MainActivity extends AppCompatActivity {
         EditText editText = (EditText) findViewById(R.id.editText);
         String message = editText.getText().toString();
         intent.putExtra(EXTRA_MESSAGE, message);
-        startActivity(intent);
+        startActivityForResult(intent, REQUEST_MSG_COUNT);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == REQUEST_MSG_COUNT){
+            if(resultCode == RESULT_OK){
+                Toast.makeText(this, "Result OK", Toast.LENGTH_SHORT).show();
+            }else if(resultCode == RESULT_CANCELED){
+                Toast.makeText(this, "Result canceled", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(this, "Text Count: " + resultCode, Toast.LENGTH_SHORT).show();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
