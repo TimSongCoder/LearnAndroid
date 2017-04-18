@@ -17,7 +17,7 @@ import java.io.FileOutputStream;
 public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_IMAGE_CAPTURE_THUMBNAIL = 1;
-    private static final String THUMBNAIL_DIR = "thumbnails";
+    public static final String THUMBNAIL_DIR = "thumbnails";
     private static final String TAG = "MainActivity";
 
     @Override

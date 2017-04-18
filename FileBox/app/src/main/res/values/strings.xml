@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">FileBox</string>
     <string name="action_generate_file">Generate File</string>
+    <string name="select_file_label">Select a file</string>
 </resources>

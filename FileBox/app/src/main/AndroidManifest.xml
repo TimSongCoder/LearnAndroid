@@ -18,14 +18,27 @@
         </activity>
         <!-- File sharing feature implemented based on FileProvider supplied by support v4 library. -->
         <provider
-            android:authorities="com.example.filebox.fileprovider"
             android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.example.filebox.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:value="@xml/share_file_path" />
         </provider>
+
+        <activity
+            android:name=".ImageSelectActivity"
+            android:label="@string/select_file_label">
+            <intent-filter>
+                <action android:name="android.intent.action.PICK" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.OPENABLE" />
+
+                <data android:mimeType="imgae/*" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
