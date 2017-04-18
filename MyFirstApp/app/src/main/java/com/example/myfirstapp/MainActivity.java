@@ -1,8 +1,15 @@
 package com.example.myfirstapp;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ShareActionProvider;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -14,10 +21,44 @@ public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
 
     public static final int REQUEST_MSG_COUNT = 1;
+    private static final String TAG = "MainActivity";
+    private ShareActionProvider shareActionProvider;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        EditText editText = (EditText) findViewById(R.id.editText);
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                Log.d(TAG, "beforeTextChanged");
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Log.d(TAG, "onTextChanged");
+                // Update the share content now.
+                setShareContent(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                Log.d(TAG, "onTextChanged");
+            }
+        });
+    }
+
+    private void setShareContent(CharSequence s) {
+        if(shareActionProvider != null){
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("text/plain");
+            intent.putExtra(Intent.EXTRA_TEXT, s.toString());
+            shareActionProvider.setShareIntent(intent);
+            Log.d(TAG, "UPDATE SHARE INTENT: " + s);
+        }else{
+            Log.d(TAG, "ShareActionProvider can not be null to function properly.");
+        }
     }
 
     /**
@@ -48,5 +89,13 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        MenuItem shareItem = menu.findItem(R.id.menu_item_share);
+        shareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
+        return true;
     }
 }
