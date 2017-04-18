@@ -24,7 +24,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:value="@xml/share_file_path" />
+                android:resource="@xml/share_file_path" />
         </provider>
 
         <activity
@@ -36,7 +36,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.OPENABLE" />
 
-                <data android:mimeType="imgae/*" />
+                <data android:mimeType="image/*" />
             </intent-filter>
         </activity>
     </application>
