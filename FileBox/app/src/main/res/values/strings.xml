@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">FileBox</string>
+    <string name="action_generate_file">Generate File</string>
+</resources>
