@@ -1,7 +1,11 @@
 package com.example.myfirstapp;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
+import android.provider.OpenableColumns;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ShareActionProvider;
@@ -12,7 +16,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
+
+import java.io.FileNotFoundException;
 
 public class MainActivity extends AppCompatActivity {
     /* It's a good practice to define keys for intent extras using your app's package name as prefix.
@@ -22,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final int REQUEST_MSG_COUNT = 1;
     private static final String TAG = "MainActivity";
+    private static final int REQUEST_PICK_IMAGE = 2;
     private ShareActionProvider shareActionProvider;
 
     @Override
@@ -87,6 +95,32 @@ public class MainActivity extends AppCompatActivity {
             }else{
                 Toast.makeText(this, "Text Count: " + resultCode, Toast.LENGTH_SHORT).show();
             }
+        }else if(requestCode == REQUEST_PICK_IMAGE){
+            if(resultCode == RESULT_OK){
+                Uri uri = data.getData();
+                String type = getContentResolver().getType(uri);
+                if("image/png".equals(type)){
+                    ParcelFileDescriptor parcelFileDescriptor = null;
+                    try {
+                        parcelFileDescriptor = getContentResolver().openFileDescriptor(uri, "r");
+                        ((ImageView)findViewById(R.id.imageView)).setImageURI(uri);
+                        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+                        if(cursor.moveToNext()){
+                            int size = cursor.getInt(cursor.getColumnIndex(OpenableColumns.SIZE));
+                            Toast.makeText(this, String.format("Picked thumbnail's size: %1d KB", size/1024), Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (FileNotFoundException e) {
+                        Log.e(TAG, "OPEN PICKED IMAGE FAILED.", e);
+                    }
+                    if(parcelFileDescriptor != null){
+                        parcelFileDescriptor.getFileDescriptor();
+                    }
+                }else{
+                    Toast.makeText(this, "Can not handle the picked file with MIME TYPE: " + type, Toast.LENGTH_SHORT).show();
+                }
+            }else{
+                Toast.makeText(this, "Pick image result cancelled.", Toast.LENGTH_SHORT).show();
+            }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -97,5 +131,13 @@ public class MainActivity extends AppCompatActivity {
         MenuItem shareItem = menu.findItem(R.id.menu_item_share);
         shareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
         return true;
+    }
+
+    public void pickImage(View view){
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/png");
+        if(intent.resolveActivity(getPackageManager()) != null){
+            startActivityForResult(intent, REQUEST_PICK_IMAGE);
+        }
     }
 }
