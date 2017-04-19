@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
             nfcAdapter.setBeamPushUrisCallback(new NfcAdapter.CreateBeamUrisCallback() {
                 @Override
                 public Uri[] createBeamUris(NfcEvent event) {
+                    Log.d(TAG, "createBeamUris IS CALLED.");
                     File dcimDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
                     File[] photos = new File(dcimDir, "Camera").listFiles();
                     Uri[] uris = new Uri[Math.min(photos.length, 6)];
@@ -101,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
                     return uris;
                 }
             }, this);
+
         }else{
             DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
                 @Override
