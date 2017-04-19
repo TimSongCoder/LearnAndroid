@@ -27,7 +27,7 @@ public class ImageSelectActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_select);
-        File[] files = getDir(MainActivity.THUMBNAIL_DIR, MODE_PRIVATE).listFiles();
+        final File[] files = new File(getFilesDir(), MainActivity.THUMBNAIL_DIR).listFiles();
         filenames = new String[files.length];
         for(int i=0; i<files.length; i++){
             filenames[i] = files[i].getAbsolutePath();
@@ -43,7 +43,9 @@ public class ImageSelectActivity extends AppCompatActivity {
                 Intent resultIntent = new Intent(ACTION_SELECT_RESULT);
                 Uri fileUri = null;
                 try{
-                    fileUri = FileProvider.getUriForFile(ImageSelectActivity.this, "com.example.filebox.fileprovider", new File(filenames[position]));
+                    File thumbnailFile = new File(filenames[position]);
+                    Log.d(TAG, "PICKED THUMBNAIL: " + thumbnailFile.getAbsolutePath());
+                    fileUri = FileProvider.getUriForFile(ImageSelectActivity.this, "com.example.filebox.fileprovider", thumbnailFile);
                 }catch (IllegalArgumentException e){
                     Log.e(TAG, "GET URI FOR FILE FAILED.", e);
                 }
@@ -55,5 +57,8 @@ public class ImageSelectActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        // For demonstration purpose: Context.getDir() and Context.getFilesDir() represents totally different paths. FileProvider doc tell that it works with Context.getFilesDir() path configuration.
+        Log.d(TAG, String.format("getDir() path: %1s; %n getFilesDir() path: %2s", getDir(MainActivity.THUMBNAIL_DIR, MODE_PRIVATE).getAbsolutePath(), new File(getFilesDir(), MainActivity.THUMBNAIL_DIR).getAbsolutePath()));
     }
 }

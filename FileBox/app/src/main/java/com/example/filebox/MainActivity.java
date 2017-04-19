@@ -41,7 +41,10 @@ public class MainActivity extends AppCompatActivity {
                 if(resultCode == RESULT_OK){
                     Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
                     if(thumbnail!=null){
-                        File thumbnailDir = getDir(THUMBNAIL_DIR, MODE_PRIVATE);
+                        File thumbnailDir = new File(getFilesDir(), THUMBNAIL_DIR);
+                        if(!thumbnailDir.exists()){
+                            thumbnailDir.mkdirs();
+                        }
                         try {
                             thumbnail.compress(Bitmap.CompressFormat.PNG, 100, new FileOutputStream(new File(thumbnailDir, System.currentTimeMillis() + ".png")));
                             Toast.makeText(this, "Thumbnail is saved successfully.", Toast.LENGTH_SHORT).show();
