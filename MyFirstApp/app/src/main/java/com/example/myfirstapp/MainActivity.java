@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                         Cursor cursor = getContentResolver().query(uri, null, null, null, null);
                         if(cursor.moveToNext()){
                             int size = cursor.getInt(cursor.getColumnIndex(OpenableColumns.SIZE));
-                            Toast.makeText(this, String.format("Picked thumbnail's size: %1d KB", size/1024), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, String.format("Picked thumbnail's size: %1d KB", size/1024), Toast.LENGTH_LONG).show();
                         }
                     } catch (FileNotFoundException e) {
                         Log.e(TAG, "OPEN PICKED IMAGE FAILED.", e);
