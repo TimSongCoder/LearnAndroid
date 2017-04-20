@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Printer</string>
     <string name="button_pick_print_file">Pick Print File</string>
+    <string name="button_webview_print">WebView Print</string>
+    <string name="print_page">Print</string>
+    <string name="button_go">Go</string>
+    <string name="edit_url_hint">Input the url</string>
 </resources>

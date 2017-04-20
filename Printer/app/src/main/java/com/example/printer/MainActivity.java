@@ -79,4 +79,8 @@ public class MainActivity extends AppCompatActivity {
                 super.onActivityResult(requestCode, resultCode, data);
         }
     }
+
+    public void webviewPrint(View view){
+        startActivity(new Intent(this, WebViewPrint.class));
+    }
 }
