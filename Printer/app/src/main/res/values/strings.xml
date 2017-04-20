@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Printer</string>
+    <string name="button_pick_print_file">Pick Print File</string>
+</resources>
