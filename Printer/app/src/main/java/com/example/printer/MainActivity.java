@@ -58,7 +58,10 @@ public class MainActivity extends AppCompatActivity {
                                 case "image/*":
                                     if(printable){
                                         try {
-                                            new PrintHelper(this).printBitmap("Image Print Test", uri);
+
+                                            PrintHelper printHelper = new PrintHelper(this);
+                                            printHelper.setScaleMode(PrintHelper.SCALE_MODE_FIT);
+                                            printHelper.printBitmap("Image Print Test", uri);
                                         } catch (FileNotFoundException e) {
                                             Log.e(TAG, "PRINT BITMAP FAILED BECAUSE OF FILE NOT FOUND.", e);
                                         }
