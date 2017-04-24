@@ -3,6 +3,7 @@ package com.example.myfirstapp;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.provider.OpenableColumns;
@@ -11,10 +12,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ShareActionProvider;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -103,6 +106,9 @@ public class MainActivity extends AppCompatActivity {
                     ParcelFileDescriptor parcelFileDescriptor = null;
                     try {
                         parcelFileDescriptor = getContentResolver().openFileDescriptor(uri, "r");
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                            TransitionManager.beginDelayedTransition((ViewGroup) findViewById(R.id.content_layout));
+                        }
                         ((ImageView)findViewById(R.id.imageView)).setImageURI(uri);
                         Cursor cursor = getContentResolver().query(uri, null, null, null, null);
                         if(cursor.moveToNext()){
