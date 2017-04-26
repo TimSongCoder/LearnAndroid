@@ -111,8 +111,13 @@ public class ScreenSlideActivity extends FragmentActivity {
 
             case R.id.action_next:
                 // Advance to the next step in the wizard. If there is no next step, setCurrentItem
-                // will do nothing.
-                mPager.setCurrentItem(mPager.getCurrentItem() + 1);
+                // will do nothing. Yes, the source just behave like this safe.
+                if(mPager.getCurrentItem() == mPagerAdapter.getCount() - 1){
+                    // Do Finish action.
+                    finish();
+                }else{
+                    mPager.setCurrentItem(mPager.getCurrentItem() + 1);
+                }
                 return true;
         }
 
