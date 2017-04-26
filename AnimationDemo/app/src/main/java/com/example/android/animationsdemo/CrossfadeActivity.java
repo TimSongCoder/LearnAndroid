@@ -22,6 +22,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,6 +37,7 @@ import android.view.View;
  * animation.</p>
  */
 public class CrossfadeActivity extends Activity {
+    private static final String TAG = "CrossfadeActivity";
     /**
      * The flag indicating whether content is loaded (text is shown) or not (loading spinner is
      * shown).
@@ -71,6 +73,10 @@ public class CrossfadeActivity extends Activity {
 
         // Retrieve and cache the system's default "short" animation time.
         mShortAnimationDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
+        if(BuildConfig.DEBUG){
+            Log.d(TAG, "DEFAULT SHORT ANIM TIME: " + mShortAnimationDuration);
+            // 200 milliseconds on Xiaomi device API level 19.
+        }
     }
 
     @Override
