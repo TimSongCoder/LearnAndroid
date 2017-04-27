@@ -18,16 +18,16 @@
     This object animator is used as a custom fragment transition. See
     FragmentTransaction.setCustomAnimation for more details.
 
-    The overall effect of this animator is to rotate the front of the card
+    The overall effect of this animator is to rotate the front(should be back) of the card
     into view. The order of operations is described below:
 
-    1. The front is immediately set to transparent.
-    2. The invisible front rotates 90 degrees, from being fully flipped
+    1. The front(should be back) is immediately set to transparent.
+    2. The invisible front(should be back) rotates 90 degrees, from being fully flipped
        to being zero-width, fully perpendicular to the viewer, facing left.
        It is still invisible.
-    3. The front is then made visible (this is half-way through the
+    3. The front(should be back) is then made visible (this is half-way through the
        animation).
-    4. The front rotates another 90 degrees, from zero-width, to
+    4. The front(should be back) rotates another 90 degrees, from zero-width, to
        100% of its normal width, facing the user.
 
     This is accomplished using the 3 child animators below, executed in

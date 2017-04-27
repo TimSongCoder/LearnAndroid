@@ -28,7 +28,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 /**
  * Demonstrates a "card-flip" animation using custom fragment transactions ({@link
@@ -127,8 +126,10 @@ public class CardFlipActivity extends Activity
                 // resources representing rotations when flipping back to the front (e.g. when
                 // the system Back button is pressed).
                 .setCustomAnimations(
-                        R.animator.card_flip_right_in, R.animator.card_flip_right_out,
-                        R.animator.card_flip_left_in, R.animator.card_flip_left_out)
+                        R.animator.card_flip_enter_right, // enter animation for this transaction
+                        R.animator.card_flip_exit_left, // exit animation for  this transaction
+                        R.animator.card_flip_enter_left, // popEnter, animation for fragment back stack popping enter.
+                        R.animator.card_flip_exit_right) // popExit, animation for fragment back stack popping exit.
 
                 // Replace any fragments currently in the container view with a fragment
                 // representing the next page (indicated by the just-incremented currentPage
