@@ -147,18 +147,18 @@ public class ZoomActivity extends FragmentActivity {
         float startScale;
         if ((float) finalBounds.width() / finalBounds.height()
                 > (float) startBounds.width() / startBounds.height()) {
-            // Extend start bounds horizontally
+            // Extend start bounds horizontally, because the final bounds aspect ratio is wider, you need to scale up reference the height.
             startScale = (float) startBounds.height() / finalBounds.height();
             float startWidth = startScale * finalBounds.width();
             float deltaWidth = (startWidth - startBounds.width()) / 2;
-            startBounds.left -= deltaWidth;
+            startBounds.left -= deltaWidth; // Increase the startBounds width.
             startBounds.right += deltaWidth;
         } else {
-            // Extend start bounds vertically
+            // Extend start bounds vertically, because the final bounds aspect ratio is taller, you need to scale up reference the width.
             startScale = (float) startBounds.width() / finalBounds.width();
             float startHeight = startScale * finalBounds.height();
             float deltaHeight = (startHeight - startBounds.height()) / 2;
-            startBounds.top -= deltaHeight;
+            startBounds.top -= deltaHeight; // Increase the startBounds  height.
             startBounds.bottom += deltaHeight;
         }
 
@@ -169,7 +169,7 @@ public class ZoomActivity extends FragmentActivity {
 
         // Set the pivot point for SCALE_X and SCALE_Y transformations to the top-left corner of
         // the zoomed-in view (the default is the center of the view).
-        expandedImageView.setPivotX(0f);
+        expandedImageView.setPivotX(0f);  // 0, relative to the view, LOCAL coordinates.
         expandedImageView.setPivotY(0f);
 
         // Construct and run the parallel animation of the four translation and scale properties
