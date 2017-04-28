@@ -26,6 +26,7 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
@@ -39,6 +40,7 @@ import android.widget.ImageView;
  * the entire activity content area. Touching the zoomed-in image hides it.</p>
  */
 public class ZoomActivity extends FragmentActivity {
+    private static final String TAG = "ZoomActivity";
     /**
      * Hold a reference to the current animator, so that it can be canceled mid-way.
      */
@@ -128,8 +130,16 @@ public class ZoomActivity extends FragmentActivity {
         // the origin for the positioning animation properties (X, Y).
         thumbView.getGlobalVisibleRect(startBounds);
         findViewById(R.id.container).getGlobalVisibleRect(finalBounds, globalOffset);
+        if(BuildConfig.DEBUG){
+            Log.d(TAG, thumbView + "startBounds: " + startBounds + ", \nfinalBounds: " + finalBounds + ", \nfinalBoundsGlobalOffset: " + globalOffset);
+            // Understand the coordinates system via the output.
+        }
         startBounds.offset(-globalOffset.x, -globalOffset.y);
         finalBounds.offset(-globalOffset.x, -globalOffset.y);
+        if(BuildConfig.DEBUG){
+            Log.d(TAG, "BoundsAfterOffset: " + thumbView + "startBounds: " + startBounds + ", \nfinalBounds: " + finalBounds + ", \nfinalBoundsGlobalOffset: " + globalOffset);
+            // Understand the coordinates system via the output.
+        }
 
         // Adjust the start bounds to be the same aspect ratio as the final bounds using the
         // "center crop" technique. This prevents undesirable stretching during the animation.
