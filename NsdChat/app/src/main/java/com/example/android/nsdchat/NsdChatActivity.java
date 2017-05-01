@@ -28,6 +28,15 @@ import android.widget.TextView;
 
 import com.example.android.nsdchat.NsdHelper;
 
+/**
+ * Before you try this app on your devices, you need to understand something:
+ * 1. This app initialize the DiscoveryListener, RegistrationListener and ResolveListener automatically when the app starts.
+ * 2. This app automatically starts the network service discovery process.
+ * 3. You need to register network service manually.
+ * 4. You need to register/discover in the same local network to move forward.
+ * 5. You can not click the action buttons, say Register/Discover/Connect arbitrarily,
+ *    click register button multiple times may lead crash because of the usage of same listener.
+ */
 public class NsdChatActivity extends Activity {
 
     NsdHelper mNsdHelper;
