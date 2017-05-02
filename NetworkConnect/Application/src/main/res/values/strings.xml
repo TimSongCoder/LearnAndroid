@@ -15,8 +15,8 @@
   -->
 
 <resources>
-    <string name="welcome_message">Welcome to Network Connect!
-        Click FETCH to fetch the first 500 characters of raw HTML from www.google.com.
+    <!-- Need to use Context.getText method to retrieve the styled text resource. Can not use br tag to implement the line breaking here in my attempt. -->
+    <string name="welcome_message">Welcome to Network Connect!\n\n<b>Click FETCH</b> to fetch the first 500 characters of raw HTML from www.google.com.
     </string>
     <string name="fetch_text">Fetch</string>
     <string name="clear_text">Clear</string>

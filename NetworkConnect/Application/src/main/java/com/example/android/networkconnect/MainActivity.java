@@ -50,6 +50,8 @@ public class MainActivity extends FragmentActivity implements DownloadCallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sample_main);
+        // Use getText method to retrieve styled text.
+        ((TextView) findViewById(R.id.intro_text)).setText(getText(R.string.welcome_message));
         mDataText = (TextView) findViewById(R.id.data_text);
         mNetworkFragment = NetworkFragment.getInstance(getSupportFragmentManager(), "https://www.google.com");
     }
