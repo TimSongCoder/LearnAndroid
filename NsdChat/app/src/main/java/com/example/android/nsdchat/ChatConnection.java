@@ -42,7 +42,13 @@ public class ChatConnection {
 
     private static final String TAG = "ChatConnection";
 
+    /**
+     * Chat target socket.
+     */
     private Socket mSocket;
+    /**
+     * My socket port as a server.
+     */
     private int mPort = -1;
 
     public ChatConnection(Handler handler) {
@@ -51,7 +57,9 @@ public class ChatConnection {
     }
 
     public void tearDown() {
+        if(mChatServer!=null)
         mChatServer.tearDown();
+        if(mChatClient!=null)
         mChatClient.tearDown();
     }
 
@@ -64,7 +72,11 @@ public class ChatConnection {
             mChatClient.sendMessage(msg);
         }
     }
-    
+
+    /**
+     * Return the socket port used as a server.
+     * @return
+     */
     public int getLocalPort() {
         return mPort;
     }
@@ -205,9 +217,9 @@ public class ChatConnection {
                     mRecThread.start();
 
                 } catch (UnknownHostException e) {
-                    Log.d(CLIENT_TAG, "Initializing socket failed, UHE", e);
+                    Log.e(CLIENT_TAG, "Initializing socket failed, UHE", e);
                 } catch (IOException e) {
-                    Log.d(CLIENT_TAG, "Initializing socket failed, IOE.", e);
+                    Log.e(CLIENT_TAG, "Initializing socket failed, IOE.", e);
                 }
 
                 while (true) {

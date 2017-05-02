@@ -19,6 +19,7 @@ package com.example.android.nsdchat;
 import android.content.Context;
 import android.net.nsd.NsdServiceInfo;
 import android.net.nsd.NsdManager;
+import android.text.TextUtils;
 import android.util.Log;
 
 public class NsdHelper {
@@ -36,6 +37,8 @@ public class NsdHelper {
     public String mServiceName = "NsdChat";
 
     NsdServiceInfo mService;
+
+    private boolean mRegistered;
 
     public NsdHelper(Context context) {
         mContext = context;
@@ -61,7 +64,7 @@ public class NsdHelper {
 
             @Override
             public void onServiceFound(NsdServiceInfo service) {
-                Log.d(TAG, "Service discovery success" + service);
+                Log.d(TAG, "Service discovery success " + service);
                 if (!service.getServiceType().equals(SERVICE_TYPE)) {
                     Log.d(TAG, "Unknown Service Type: " + service.getServiceType());
                 } else if (service.getServiceName().equals(mServiceName)) {
@@ -126,6 +129,7 @@ public class NsdHelper {
             public void onServiceRegistered(NsdServiceInfo NsdServiceInfo) {
                 mServiceName = NsdServiceInfo.getServiceName();
                 Log.d(TAG, "onServiceRegistered - mServiceName: " + mServiceName);
+                mRegistered = true;
             }
             
             @Override
@@ -134,10 +138,13 @@ public class NsdHelper {
 
             @Override
             public void onServiceUnregistered(NsdServiceInfo arg0) {
+                Log.d(TAG, "onServiceUnregistered: " + arg0);
+                mRegistered = false;
             }
             
             @Override
             public void onUnregistrationFailed(NsdServiceInfo serviceInfo, int errorCode) {
+                Log.e(TAG, "onUnregistrationFailed: " + serviceInfo + ", errorCode: " + errorCode);
             }
             
         };
@@ -168,6 +175,7 @@ public class NsdHelper {
     }
     
     public void tearDown() {
+        if(mRegistered)
         mNsdManager.unregisterService(mRegistrationListener);
     }
 }
