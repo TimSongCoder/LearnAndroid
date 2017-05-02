@@ -100,7 +100,7 @@ public class MainActivity extends FragmentActivity implements DownloadCallback {
     public NetworkInfo getActiveNetworkInfo() {
         ConnectivityManager connectivityManager =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo(); // This method call need ACCESS_NETWORK_STATE permission.
         return networkInfo;
     }
 

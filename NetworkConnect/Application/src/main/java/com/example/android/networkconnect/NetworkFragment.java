@@ -72,19 +72,19 @@ public class NetworkFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Retain this Fragment across configuration changes in the host Activity.
-        setRetainInstance(true);
+        setRetainInstance(true); // It does not support fragments in back stack.
         mUrlString = getArguments().getString(URL_KEY);
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(Context context) {// This method will be called even instance retained.
         super.onAttach(context);
         // Host Activity will handle callbacks from task.
         mCallback = (DownloadCallback)context;
     }
 
     @Override
-    public void onDetach() {
+    public void onDetach() {// This method will be called even instance retained.
         super.onDetach();
         // Clear reference to host Activity.
         mCallback = null;
@@ -225,7 +225,7 @@ public class NetworkFragment extends Fragment {
                 // Timeout for reading InputStream arbitrarily set to 3000ms.
                 connection.setReadTimeout(3000);
                 // Timeout for connection.connect() arbitrarily set to 3000ms.
-                connection.setConnectTimeout(3000);
+                connection.setConnectTimeout(10000);
                 // For this use case, set HTTP method to GET.
                 connection.setRequestMethod("GET");
                 // Already true by default but setting just in case; needs to be true since this request
