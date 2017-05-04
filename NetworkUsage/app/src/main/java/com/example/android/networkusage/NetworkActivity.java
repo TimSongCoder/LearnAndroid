@@ -220,7 +220,7 @@ public class NetworkActivity extends Activity {
         String url = null;
         String summary = null;
         Calendar rightNow = Calendar.getInstance();
-        DateFormat formatter = new SimpleDateFormat("MMM dd h:mmaa");
+        DateFormat formatter = new SimpleDateFormat("MMM dd h:mmaa", Locale.US);
 
         // Checks whether the user set the preference to include summary text
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
