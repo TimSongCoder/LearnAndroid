@@ -21,7 +21,6 @@
         android:title="Download Feed"
         android:summary="Network connectivity required to download the feed."
         android:key="listPref"
-        android:defaultValue="Wi-Fi"
         android:entries="@array/listArray"
         android:entryValues="@array/listValues"
      />

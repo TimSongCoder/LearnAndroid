@@ -44,6 +44,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 
 /**
@@ -210,7 +211,7 @@ public class NetworkActivity extends Activity {
         }
     }
 
-    // Uploads XML from stackoverflow.com, parses it, and combines it with
+    // Downloads XML from stackoverflow.com, parses it, and combines it with
     // HTML markup. Returns HTML string.
     private String loadXmlFromNetwork(String urlString) throws XmlPullParserException, IOException {
         InputStream stream = null;

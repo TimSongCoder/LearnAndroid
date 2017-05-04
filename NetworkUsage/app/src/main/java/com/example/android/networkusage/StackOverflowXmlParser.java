@@ -30,9 +30,8 @@ import java.util.List;
  * where each list element represents a single entry (post) in the XML feed.
  */
 public class StackOverflowXmlParser {
-    private static final String ns = null;
-
     // We don't use namespaces
+    private static final String ns = null;
 
     public List<Entry> parse(InputStream in) throws XmlPullParserException, IOException {
         try {

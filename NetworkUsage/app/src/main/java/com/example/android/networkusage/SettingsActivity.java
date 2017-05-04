@@ -17,6 +17,7 @@ package com.example.android.networkusage;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
+import android.preference.ListPreference;
 import android.preference.PreferenceActivity;
 import com.example.android.networkusage.R;
 
@@ -35,6 +36,7 @@ public class SettingsActivity extends PreferenceActivity
 
         // Loads the XML preferences file.
         addPreferencesFromResource(R.xml.preferences);
+        ((ListPreference)findPreference("listPref")).setValueIndex(1);
     }
 
     @Override
