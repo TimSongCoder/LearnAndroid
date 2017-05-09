@@ -38,4 +38,14 @@
             android:layout_height="wrap_content"
             />
     </ScrollView>
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:onClick="cancelAllRequest"
+        android:text="@string/cancel_request"
+        app:layout_constraintBaseline_toBaselineOf="@+id/button2"
+        app:layout_constraintLeft_toRightOf="@+id/button2" />
 </android.support.constraint.ConstraintLayout>

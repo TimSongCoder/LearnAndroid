@@ -16,6 +16,7 @@ import com.android.volley.toolbox.Volley;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+    private RequestQueue mRequestQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void requestString(View view) {
         // Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(this); // This convenient method will start the queue automatically.
+        mRequestQueue = Volley.newRequestQueue(this); // This convenient method will start the queue automatically.
         final String requestUrl = "https://cn.bing.com";
 
         // Request a string response from the provided URL.
@@ -47,6 +48,20 @@ public class MainActivity extends AppCompatActivity {
         stringRequest.setTag(TAG);
 
         // Add the request to RequestQueue.
-        queue.add(stringRequest);
+        mRequestQueue.add(stringRequest);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(mRequestQueue != null){
+            mRequestQueue.cancelAll(TAG);
+        }
+    }
+
+    public void cancelAllRequest(View view){
+        if(mRequestQueue != null){
+            mRequestQueue.cancelAll(TAG);
+        }
     }
 }
