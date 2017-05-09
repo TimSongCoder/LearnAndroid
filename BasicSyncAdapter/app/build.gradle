@@ -6,6 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.android.network.sync.basicsyncadapter"
+        // SyncAdapters are available in API 5 and above. We use API 7 as a baseline for samples. Change to 9 corresponding to the support library.
         minSdkVersion 9
         targetSdkVersion 17
 

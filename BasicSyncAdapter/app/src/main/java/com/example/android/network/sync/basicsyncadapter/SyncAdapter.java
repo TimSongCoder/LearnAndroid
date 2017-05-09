@@ -123,7 +123,7 @@ class SyncAdapter extends AbstractThreadedSyncAdapter {
      *
      * <p>This is where we actually perform any work required to perform a sync.
      * {@link AbstractThreadedSyncAdapter} guarantees that this will be called on a non-UI thread,
-     * so it is safe to peform blocking I/O here.
+     * so it is safe to perform blocking I/O here.
      *
      * <p>The syncResult argument allows you to pass information back to the method that triggered
      * the sync.

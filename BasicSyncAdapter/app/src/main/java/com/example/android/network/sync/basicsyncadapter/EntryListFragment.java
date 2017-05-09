@@ -19,6 +19,7 @@ package com.example.android.network.sync.basicsyncadapter;
 import android.accounts.Account;
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SyncStatusObserver;
 import android.database.Cursor;
@@ -139,7 +140,7 @@ public class EntryListFragment extends ListFragment
      * {@link SyncService} with it, and establish a sync schedule.
      */
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(Context activity) {
         super.onAttach(activity);
 
         // Create account, if needed
@@ -293,7 +294,7 @@ public class EntryListFragment extends ListFragment
      * Set the state of the Refresh button. If a sync is active, turn on the ProgressBar widget.
      * Otherwise, turn it off.
      *
-     * @param refreshing True if an active sync is occuring, false otherwise
+     * @param refreshing True if an active sync is occurring, false otherwise
      */
     public void setRefreshActionButtonState(boolean refreshing) {
         if (mOptionsMenu == null) {
@@ -311,7 +312,7 @@ public class EntryListFragment extends ListFragment
     }
 
     /**
-     * Crfate a new anonymous SyncStatusObserver. It's attached to the app's ContentResolver in
+     * Create a new anonymous SyncStatusObserver. It's attached to the app's ContentResolver in
      * onResume(), and removed in onPause(). If status changes, it sets the state of the Refresh
      * button. If a sync is active or pending, the Refresh button is replaced by an indeterminate
      * ProgressBar; otherwise, the button itself is displayed.
