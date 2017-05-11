@@ -35,6 +35,10 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
 import java.text.SimpleDateFormat;
@@ -50,7 +54,7 @@ import java.util.Locale;
  * also using APIs that need authentication.
  */
 public class MainActivity extends AppCompatActivity implements
-        ConnectionCallbacks, OnConnectionFailedListener {
+        ConnectionCallbacks, OnConnectionFailedListener, LocationListener {
 
     protected static final String TAG = "MainActivity";
     private static final int REQUEST_FIX_FAILURE = 1;
@@ -72,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements
     protected TextView mLongitudeText;
     private TextView mTimestampText;
     private String mTimestampLabel;
+    private boolean mLocationUpdateFlag = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -120,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements
             case REQUEST_COARSE_LOCATION:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
                     // Get location info.
-                    getLastKnownLocation();
+                    getFusedLocation(false);
                 else
                     Toast.makeText(this, "Location permission is denied.", Toast.LENGTH_SHORT).show();
                 break;
@@ -137,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    private void getLastKnownLocation() {
+    private void getFusedLocation(boolean needUpdate) {
         // Provides a simple way of getting a device's location and is well suited for
         // applications that do not require a fine-grained location and that do not need location
         // updates. Gets the best and most recent location currently available, which may be null
@@ -164,19 +169,33 @@ public class MainActivity extends AppCompatActivity implements
                 ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_COARSE_LOCATION);
             }
         } else {
-            // Permission is checked outside of the method.
+            if (needUpdate) {
+                LocationRequest locationRequest = LocationRequest.create().setPriority(LocationRequest.PRIORITY_NO_POWER).setFastestInterval(5000);
+                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, locationRequest, this).setResultCallback(new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(@NonNull Status status) {
+                        if (BuildConfig.DEBUG) {
+                            Log.i(TAG, "RequestLocationUpdates - PendingResult - ResultCallback - Status: " + status);
+                        }
+                    }
+                });
+            }
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             if (mLastLocation != null) {
-                mLatitudeText.setText(String.format("%s: %f", mLatitudeLabel,
-                        mLastLocation.getLatitude()));
-                mLongitudeText.setText(String.format("%s: %f", mLongitudeLabel,
-                        mLastLocation.getLongitude()));
-                mTimestampText.setText(String.format("%1s: %2s", mTimestampLabel, new SimpleDateFormat("HH:mm:ss:SSS, yyyy-MM-dd", Locale.US).format(new Date(mLastLocation.getTime()))));
+                updateLocationInfo();
             } else {
                 Toast.makeText(this, R.string.no_location_detected, Toast.LENGTH_LONG).show();
                 // The Emulator has no last known location to report:)
             }
         }
+    }
+
+    private void updateLocationInfo() {
+        mLatitudeText.setText(String.format("%s: %f", mLatitudeLabel,
+                mLastLocation.getLatitude()));
+        mLongitudeText.setText(String.format("%s: %f", mLongitudeLabel,
+                mLastLocation.getLongitude()));
+        mTimestampText.setText(String.format("%1s: %2s", mTimestampLabel, new SimpleDateFormat("HH:mm:ss:SSS, yyyy-MM-dd", Locale.US).format(new Date(mLastLocation.getTime()))));
     }
 
     @Override
@@ -204,6 +223,37 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public void getLastLocation(View view) {
-        getLastKnownLocation();
+        getFusedLocation(false);
+    }
+
+    public void getUpdatableLocation(View view) {
+        getFusedLocation(true);
+        mLocationUpdateFlag = true;
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        if (BuildConfig.DEBUG) {
+            Log.i(TAG, "onLocationChanged");
+            if (location != null) {
+                mLastLocation = location;
+                updateLocationInfo();
+            }
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(mLocationUpdateFlag && mGoogleApiClient.isConnected()){
+            // Continue to update loaction info.
+            getFusedLocation(true);
+        }
     }
 }

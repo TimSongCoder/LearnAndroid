@@ -38,7 +38,7 @@
             android:id="@+id/button_get_periodic_loaction"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="getLastLocation"
+            android:onClick="getUpdatableLocation"
             android:text="@string/btn_get_periodic_loactions" />
     </LinearLayout>
 
