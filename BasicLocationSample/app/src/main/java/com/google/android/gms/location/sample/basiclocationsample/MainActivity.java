@@ -26,6 +26,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +36,10 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.location.LocationServices;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Location sample.
@@ -65,6 +70,8 @@ public class MainActivity extends AppCompatActivity implements
     protected String mLongitudeLabel;
     protected TextView mLatitudeText;
     protected TextView mLongitudeText;
+    private TextView mTimestampText;
+    private String mTimestampLabel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,8 +80,10 @@ public class MainActivity extends AppCompatActivity implements
 
         mLatitudeLabel = getResources().getString(R.string.latitude_label);
         mLongitudeLabel = getResources().getString(R.string.longitude_label);
+        mTimestampLabel = getResources().getString(R.string.timestamp_label);
         mLatitudeText = (TextView) findViewById((R.id.latitude_text));
         mLongitudeText = (TextView) findViewById((R.id.longitude_text));
+        mTimestampText = (TextView) findViewById(R.id.timestamp_text);
 
         buildGoogleApiClient();
     }
@@ -123,6 +132,12 @@ public class MainActivity extends AppCompatActivity implements
      */
     @Override
     public void onConnected(Bundle connectionHint) {
+        if (BuildConfig.DEBUG) {
+            Log.i(TAG, "Google Service Api is connected.");
+        }
+    }
+
+    private void getLastKnownLocation() {
         // Provides a simple way of getting a device's location and is well suited for
         // applications that do not require a fine-grained location and that do not need location
         // updates. Gets the best and most recent location currently available, which may be null
@@ -149,21 +164,18 @@ public class MainActivity extends AppCompatActivity implements
                 ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_COARSE_LOCATION);
             }
         } else {
-            getLastKnownLocation();
-        }
-    }
-
-    private void getLastKnownLocation() {
-        // Permission is checked outside of the method.
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        if (mLastLocation != null) {
-            mLatitudeText.setText(String.format("%s: %f", mLatitudeLabel,
-                    mLastLocation.getLatitude()));
-            mLongitudeText.setText(String.format("%s: %f", mLongitudeLabel,
-                    mLastLocation.getLongitude()));
-        } else {
-            Toast.makeText(this, R.string.no_location_detected, Toast.LENGTH_LONG).show();
-            // The Emulator has no last known location to report:)
+            // Permission is checked outside of the method.
+            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            if (mLastLocation != null) {
+                mLatitudeText.setText(String.format("%s: %f", mLatitudeLabel,
+                        mLastLocation.getLatitude()));
+                mLongitudeText.setText(String.format("%s: %f", mLongitudeLabel,
+                        mLastLocation.getLongitude()));
+                mTimestampText.setText(String.format("%1s: %2s", mTimestampLabel, new SimpleDateFormat("HH:mm:ss:SSS, yyyy-MM-dd", Locale.US).format(new Date(mLastLocation.getTime()))));
+            } else {
+                Toast.makeText(this, R.string.no_location_detected, Toast.LENGTH_LONG).show();
+                // The Emulator has no last known location to report:)
+            }
         }
     }
 
@@ -189,5 +201,9 @@ public class MainActivity extends AppCompatActivity implements
         // attempt to re-establish the connection.
         Log.i(TAG, "Connection suspended");
         mGoogleApiClient.connect();
+    }
+
+    public void getLastLocation(View view) {
+        getLastKnownLocation();
     }
 }

@@ -22,4 +22,7 @@
     <string name="no_location_detected">
         No location detected. Make sure location is enabled on the device.
     </string>
+    <string name="btn_get_last_location">Get Last Location</string>
+    <string name="btn_get_periodic_loactions">Get Periodic Location Updates</string>
+    <string name="timestamp_label">Timestamp</string>
 </resources>
