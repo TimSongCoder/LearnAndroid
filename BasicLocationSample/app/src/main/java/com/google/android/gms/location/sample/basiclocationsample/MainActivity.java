@@ -18,6 +18,8 @@ package com.google.android.gms.location.sample.basiclocationsample;
 
 import android.Manifest;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -40,6 +42,9 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -59,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements
     protected static final String TAG = "MainActivity";
     private static final int REQUEST_FIX_FAILURE = 1;
     private static final int REQUEST_COARSE_LOCATION = 2;
+    private static final int REQUEST_SETTINGS_RESOLUTION = 3;
 
     /**
      * Provides the entry point to Google Play services.
@@ -170,15 +176,41 @@ public class MainActivity extends AppCompatActivity implements
             }
         } else {
             if (needUpdate) {
-                LocationRequest locationRequest = LocationRequest.create().setPriority(LocationRequest.PRIORITY_NO_POWER).setFastestInterval(5000);
-                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, locationRequest, this).setResultCallback(new ResultCallback<Status>() {
+                final LocationRequest locationRequest = LocationRequest.create().setPriority(LocationRequest.PRIORITY_NO_POWER).setFastestInterval(5000);
+                // Check the location service settings.
+                LocationServices.SettingsApi.checkLocationSettings(mGoogleApiClient,
+                        new LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
+                                .build()).setResultCallback(new ResultCallback<LocationSettingsResult>() {
                     @Override
-                    public void onResult(@NonNull Status status) {
+                    public void onResult(@NonNull LocationSettingsResult locationSettingsResult) {
                         if (BuildConfig.DEBUG) {
-                            Log.i(TAG, "RequestLocationUpdates - PendingResult - ResultCallback - Status: " + status);
+                            Log.i(TAG, "checkLocationSettings - ResultCallback - onResult: " + locationSettingsResult.getStatus());
+                            switch (locationSettingsResult.getStatus().getStatusCode()) {
+                                case LocationSettingsStatusCodes.SUCCESS:
+                                    // Current settings are adequate for use, start the location update request.
+                                    //noinspection MissingPermission
+                                    LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, locationRequest, MainActivity.this).setResultCallback(new ResultCallback<Status>() {
+                                        @Override
+                                        public void onResult(@NonNull Status status) {
+                                            if (BuildConfig.DEBUG) {
+                                                Log.i(TAG, "RequestLocationUpdates - PendingResult - ResultCallback - Status: " + status);
+                                            }
+                                        }
+                                    });
+                                    break;
+                                case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                                    // Current location settings is not ready to use, need change.
+                                    try {
+                                        locationSettingsResult.getStatus().startResolutionForResult(MainActivity.this, REQUEST_SETTINGS_RESOLUTION);
+                                    } catch (IntentSender.SendIntentException e) {
+                                        Log.e(TAG, "LOCATION SETTINGS START RESOLUTION FOR RESULT FAILED.", e);
+                                    }
+                                    break;
+                            }
                         }
                     }
                 });
+
             }
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             if (mLastLocation != null) {
@@ -251,9 +283,19 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        if(mLocationUpdateFlag && mGoogleApiClient.isConnected()){
+        if (mLocationUpdateFlag && mGoogleApiClient.isConnected()) {
             // Continue to update loaction info.
             getFusedLocation(true);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_SETTINGS_RESOLUTION) {
+            if (BuildConfig.DEBUG) {
+                Log.i(TAG, "REQUEST LOCATION SETTINGS RESOLUTION RESULT BACK: OK? " + (resultCode == RESULT_OK));
+            }
         }
     }
 }
