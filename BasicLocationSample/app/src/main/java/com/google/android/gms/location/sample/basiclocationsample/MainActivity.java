@@ -227,7 +227,7 @@ public class MainActivity extends AppCompatActivity implements
                 mLastLocation.getLatitude()));
         mLongitudeText.setText(String.format("%s: %f", mLongitudeLabel,
                 mLastLocation.getLongitude()));
-        mTimestampText.setText(String.format("%1s: %2s", mTimestampLabel, new SimpleDateFormat("HH:mm:ss:SSS, yyyy-MM-dd", Locale.US).format(new Date(mLastLocation.getTime()))));
+        mTimestampText.setText(String.format("%1s: %2s", mTimestampLabel, new SimpleDateFormat("HH:mm:ss:SSS, yyyy-MM-dd", Locale.getDefault()).format(new Date(mLastLocation.getTime()))));
     }
 
     @Override
