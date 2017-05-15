@@ -57,5 +57,8 @@ public final class Constants {
 
         // Googleplex.
         BAY_AREA_LANDMARKS.put("GOOGLE", new LatLng(37.422611,-122.0840577));
+
+        // BBT GROUP, NOT IN BAY AREA ACTUALLY.
+        BAY_AREA_LANDMARKS.put("BBT_GROUP", new LatLng(30.630631, 114.310071));
     }
 }
