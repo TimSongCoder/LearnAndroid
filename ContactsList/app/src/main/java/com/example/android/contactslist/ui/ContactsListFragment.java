@@ -141,7 +141,7 @@ public class ContactsListFragment extends ListFragment implements
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) { // This is called after onAttach method, you can call getActivity safely.
         super.onCreate(savedInstanceState);
 
         // Check if this fragment is part of a two-pane set up or a single pane by reading a
@@ -296,7 +296,7 @@ public class ContactsListFragment extends ListFragment implements
      * contact should no longer be selected.
      */
     private void onSelectionCleared() {
-        // Uses callback to notify activity this contains this fragment
+        // Uses callback to notify activity that contains this fragment
         mOnContactSelectedListener.onSelectionCleared();
 
         // Clears currently checked item

@@ -43,7 +43,7 @@ public class ContactsListActivity extends FragmentActivity implements
 
     // True if this activity instance is a search result view (used on pre-HC devices that load
     // search results in a separate instance of the activity rather than loading results in-line
-    // as the query is typed.
+    // as the query is typed).
     private boolean isSearchResultView = false;
 
     @Override
@@ -57,7 +57,7 @@ public class ContactsListActivity extends FragmentActivity implements
         // fragment. One larger screen devices this is a two pane view with two fragments.
         setContentView(R.layout.activity_main);
 
-        // Check if two pane bool is set based on resource directories
+        // Check if two pane bool is set based on resource directories.   THIS IS SMART:)
         isTwoPaneLayout = getResources().getBoolean(R.bool.has_two_panes);
 
         // Check if this activity instance has been triggered as a result of a search query. This
@@ -74,7 +74,7 @@ public class ContactsListActivity extends FragmentActivity implements
 
             // This flag notes that the Activity is doing a search, and so the result will be
             // search results rather than all contacts. This prevents the Activity and Fragment
-            // from trying to a search on search results.
+            // from trying to do a search on search results.
             isSearchResultView = true;
             mContactsListFragment.setSearchQuery(searchQuery);
 
