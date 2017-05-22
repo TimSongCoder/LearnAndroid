@@ -104,6 +104,7 @@ public class CollectionDemoActivity extends FragmentActivity {
                 } else {
                     // This activity is part of the application's task, so simply
                     // navigate up to the hierarchical parent activity.
+                    upIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     NavUtils.navigateUpTo(this, upIntent);
                 }
                 return true;
