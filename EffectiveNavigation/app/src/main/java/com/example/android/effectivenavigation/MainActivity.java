@@ -17,20 +17,30 @@
 package com.example.android.effectivenavigation;
 
 import android.app.ActionBar;
+import android.app.ActivityManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
+
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
+
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide fragments for each of the
@@ -49,6 +59,19 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // Digression validation, time related problem.
+        Log.i(TAG, System.currentTimeMillis() + " @ " + TimeZone.getDefault());
+        ActivityManager activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            List<ActivityManager.AppTask> appTasks = activityManager.getAppTasks();
+            for (ActivityManager.AppTask appTask : appTasks) {
+                Log.i(TAG, "TaskInfo: " + appTask.getTaskInfo().id);
+            }
+        }
+        /*
+         * C. 05-22 09:22:26.493 7652-7652/com.example.android.effectivenavigation I/TIME: 1495416146502 @ libcore.util.ZoneInfo[id="Asia/Hong_Kong",mRawOffset=28800000,mEarliestRawOffset=28800000,mUseDst=false,mDstSavings=3600000,transitions=69]
+         * D. 05-21 19:24:36.453 10195-1019com.example.android.effectivenavigation I/TIME: 1495416276461 @ libcore.util.ZoneInfo[id="America/Costa_Rica",mRawOffset=-21600000,mEarliestRawOffset=-21600000,mUseDst=false,mDstSavings=3600000,transitions=9]
+         */
 
         // Create the adapter that will return a fragment for each of the three primary sections
         // of the app.
@@ -150,7 +173,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
+                                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_section_launchpad, container, false);
 
             // Demonstration of a collection-browsing activity.
@@ -193,7 +216,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
+                                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_section_dummy, container, false);
             Bundle args = getArguments();
             ((TextView) rootView.findViewById(android.R.id.text1)).setText(
