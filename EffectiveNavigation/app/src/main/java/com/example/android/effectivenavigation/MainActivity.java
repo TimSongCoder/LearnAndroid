@@ -197,8 +197,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                             // to the external activity.
                             Intent externalActivityIntent = new Intent(Intent.ACTION_PICK);
                             externalActivityIntent.setType("image/*");
-                            externalActivityIntent.addFlags(
-                                    Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+//                            externalActivityIntent.addFlags(
+//                                    Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
                             startActivity(externalActivityIntent);
                         }
                     });
