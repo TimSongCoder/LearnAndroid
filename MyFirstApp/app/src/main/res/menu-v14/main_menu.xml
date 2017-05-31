@@ -12,6 +12,6 @@
         android:id="@+id/menu_robot"
         android:title="@string/summon_robot"
         android:icon="@mipmap/ic_launcher_round"
-        app:actionLayout="@layout/menu_robot_layout"
+        app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="ifRoom|collapseActionView"/>
 </menu>
