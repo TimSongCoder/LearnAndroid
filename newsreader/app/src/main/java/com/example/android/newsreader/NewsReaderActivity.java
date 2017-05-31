@@ -137,7 +137,7 @@ public class NewsReaderActivity extends FragmentActivity
         android.app.ActionBar actionBar = getActionBar();
         actionBar.setDisplayShowTitleEnabled(false);
 
-        // Set up a CompatActionBarNavHandler to deliver us the Action Bar nagivation events
+        // Set up a CompatActionBarNavHandler to deliver us the Action Bar navigation events
         CompatActionBarNavHandler handler = new CompatActionBarNavHandler(this);
         if (showTabs) {
             actionBar.setNavigationMode(android.app.ActionBar.NAVIGATION_MODE_TABS);

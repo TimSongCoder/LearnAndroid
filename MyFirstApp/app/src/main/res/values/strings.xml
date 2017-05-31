@@ -4,4 +4,8 @@
     <string name="button_send">Send</string>
     <string name="menu_share">Share</string>
     <string name="button_pick_image">Pick a Image</string>
+    <string name="summon_robot">Summon Robot</string>
+    <string name="robot_tom">ROBOT TOM</string>
+    <string name="robot_tim">ROBOT TIM</string>
+    <string name="robot_tony">ROBOT TONY</string>
 </resources>
