@@ -16,7 +16,7 @@
 
 <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:custom="http://schemas.android.com/apk/res/com.example.android.customviews"
+        xmlns:custom="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -24,7 +24,7 @@
     <com.example.android.customviews.charting.PieChart
             android:id="@+id/Pie"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:padding="10dp"
             android:layout_weight="100"
             custom:showText="true"

@@ -6,6 +6,10 @@ android {
 
     defaultConfig {
         applicationId "com.example.android.customviews"
+        minSdkVersion 4
+        targetSdkVersion 25
+        versionCode 1
+        versionName "0.1"
     }
 
     buildTypes {
