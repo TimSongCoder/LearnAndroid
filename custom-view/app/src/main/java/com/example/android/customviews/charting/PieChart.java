@@ -507,7 +507,8 @@ public class PieChart extends ViewGroup {
         // Whatever the width ends up being, ask for a height that would let the pie
         // get as big as it can
         int minh = (w - (int) mTextWidth) + getPaddingBottom() + getPaddingTop();
-        int h = Math.min(MeasureSpec.getSize(heightMeasureSpec), minh);
+        int h = Math.max(MeasureSpec.getSize(heightMeasureSpec), minh);
+        // Use Math.max method to maximize the view height with honoring the layout_weight attribute or system measurement.
 
         setMeasuredDimension(w, h);
     }
