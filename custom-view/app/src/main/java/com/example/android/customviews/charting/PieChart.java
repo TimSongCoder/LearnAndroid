@@ -23,6 +23,7 @@ import android.content.res.TypedArray;
 import android.graphics.*;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.*;
 import android.widget.Scroller;
 
@@ -38,6 +39,7 @@ import java.util.List;
  * Custom view that shows a pie chart and, optionally, a label.
  */
 public class PieChart extends ViewGroup {
+    private static final String TAG = PieChart.class.getSimpleName();
     private List<Item> mData = new ArrayList<Item>();
 
     private float mTotal = 0.0f;
@@ -98,9 +100,6 @@ public class PieChart extends ViewGroup {
      */
     public static final int FLING_VELOCITY_DOWNSCALE = 4;
 
-    /**
-     *
-     */
     public static final int AUTOCENTER_ANIM_DURATION = 250;
 
     /**
@@ -420,11 +419,11 @@ public class PieChart extends ViewGroup {
         // don't result in aliasing.
         it.mHighlight = Color.argb(
                 0xff,
-                Math.min((int) (mHighlightStrength * (float) Color.red(color)), 0xff),
+                Math.min((int) (mHighlightStrength * (float) Color.red(color)), 0xff), // Manual range checks are needed.
                 Math.min((int) (mHighlightStrength * (float) Color.green(color)), 0xff),
                 Math.min((int) (mHighlightStrength * (float) Color.blue(color)), 0xff)
         );
-        mTotal += value;
+        mTotal += value; // Total amount, used for proportion calculation.
 
         mData.add(it);
 
@@ -510,11 +509,12 @@ public class PieChart extends ViewGroup {
         int h = Math.max(MeasureSpec.getSize(heightMeasureSpec), minh);
         // Use Math.max method to maximize the view height with honoring the layout_weight attribute or system measurement.
 
-        setMeasuredDimension(w, h);
+        setMeasuredDimension(w, h); // This call is mandatory as specified by contract.
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        Log.d(TAG, String.format("onSizeChanged: %1$d, %2$d; %3$d, %4$d", w, h, oldw, oldh));
         super.onSizeChanged(w, h, oldw, oldh);
 
         //
@@ -667,7 +667,7 @@ public class PieChart extends ViewGroup {
         mPiePaint.setTextSize(mTextHeight);
 
         // Set up the paint for the shadow
-        mShadowPaint = new Paint(0);
+        mShadowPaint = new Paint(0); // TODO What's the parameter meaning?
         mShadowPaint.setColor(0xff101010);
         mShadowPaint.setMaskFilter(new BlurMaskFilter(8, BlurMaskFilter.Blur.NORMAL));
 
@@ -801,7 +801,7 @@ public class PieChart extends ViewGroup {
     private void centerOnCurrentItem() {
         Item current = mData.get(getCurrentItem());
         int targetAngle = current.mStartAngle + (current.mEndAngle - current.mStartAngle) / 2;
-        targetAngle -= mCurrentItemAngle;
+        targetAngle -= mCurrentItemAngle; // Offset or delta.
         if (targetAngle < 90 && mPieRotation > 180) targetAngle += 360;
 
         if (Build.VERSION.SDK_INT >= 11) {
@@ -821,7 +821,7 @@ public class PieChart extends ViewGroup {
     private class PieView extends View {
         // Used for SDK < 11
         private float mRotation = 0;
-        private Matrix mTransform = new Matrix();
+        private Matrix mTransformMatrix = new Matrix();
         private PointF mPivot = new PointF();
 
         /**
@@ -852,9 +852,9 @@ public class PieChart extends ViewGroup {
             super.onDraw(canvas);
 
             if (Build.VERSION.SDK_INT < 11) {
-                mTransform.set(canvas.getMatrix());
-                mTransform.preRotate(mRotation, mPivot.x, mPivot.y);
-                canvas.setMatrix(mTransform);
+                mTransformMatrix.set(canvas.getMatrix());
+                mTransformMatrix.preRotate(mRotation, mPivot.x, mPivot.y);
+                canvas.setMatrix(mTransformMatrix);
             }
 
             for (Item it : mData) {
@@ -862,7 +862,8 @@ public class PieChart extends ViewGroup {
                 canvas.drawArc(mBounds,
                         360 - it.mEndAngle,
                         it.mEndAngle - it.mStartAngle,
-                        true, mPiePaint);
+                        true,
+                        mPiePaint);
             }
         }
 
