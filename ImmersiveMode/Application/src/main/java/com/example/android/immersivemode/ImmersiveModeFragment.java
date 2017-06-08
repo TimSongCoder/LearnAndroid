@@ -18,11 +18,17 @@ package com.example.android.immersivemode;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.GestureDetector;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.example.android.common.logger.Log;
 
+/**
+ * This is a Fragment has no content view, but has options menu to display and be used to control
+ * current window's immersive mode.
+ */
 public class ImmersiveModeFragment extends Fragment {
 
     public static final String TAG = "ImmersiveModeFragment";
@@ -43,6 +49,12 @@ public class ImmersiveModeFragment extends Fragment {
                     public void onSystemUiVisibilityChange(int i) {
                         int height = decorView.getHeight();
                         Log.i(TAG, "Current height: " + height);
+                        if((i & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0){
+                            // SYSTEM UI VISIBLE
+                            getActivity().getActionBar().show();
+                        }else{
+                            getActivity().getActionBar().hide();
+                        }
                     }
                 });
     }
@@ -68,7 +80,7 @@ public class ImmersiveModeFragment extends Fragment {
         // END_INCLUDE (get_current_ui_flags)
         // BEGIN_INCLUDE (toggle_ui_flags)
         boolean isImmersiveModeEnabled =
-                ((uiOptions | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY) == uiOptions);
+                ((uiOptions | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION) == uiOptions);
         if (isImmersiveModeEnabled) {
             Log.i(TAG, "Turning immersive mode mode off. ");
         } else {
@@ -93,8 +105,8 @@ public class ImmersiveModeFragment extends Fragment {
         // Sticky immersive mode differs in that it makes the navigation and status bars
         // semi-transparent, and the UI flag does not get cleared when the user interacts with
         // the screen.
-        if (Build.VERSION.SDK_INT >= 18) {
-            newUiOptions ^= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+        if (Build.VERSION.SDK_INT > 18) {
+            newUiOptions ^= View.SYSTEM_UI_FLAG_IMMERSIVE;
         }
 
         getActivity().getWindow().getDecorView().setSystemUiVisibility(newUiOptions);
