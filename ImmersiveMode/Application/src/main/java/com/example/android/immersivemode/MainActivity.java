@@ -19,18 +19,25 @@ package com.example.android.immersivemode;
 
 import android.gesture.Gesture;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GestureDetectorCompat;
+import android.support.v4.view.VelocityTrackerCompat;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MotionEvent;
+import android.view.VelocityTracker;
+import android.view.View;
 
 import com.example.android.common.activities.SampleActivityBase;
 import com.example.android.common.logger.Log;
 import com.example.android.common.logger.LogFragment;
 import com.example.android.common.logger.LogWrapper;
 import com.example.android.common.logger.MessageOnlyLogFilter;
+
+import java.util.Locale;
 
 /**
  * A simple launcher activity containing a summary sample description
@@ -45,15 +52,56 @@ public class MainActivity extends SampleActivityBase {
     public static final String GESTURE_TAG = "GESTURE_DETECTOR";
 
     private GestureDetectorCompat mGestureDetector;
+    private VelocityTracker mVelocityTracker;
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         Log.d(TAG, "onTouchEvent: " + event);
         mGestureDetector.onTouchEvent(event);
         // Let the GestureDetector analyze the given MotionEvent and it will trigger the appropriate callbacks OnGestureListener supplied if applicable.
+
+        // Try the VelocityTracker API out as introduced in training doc.
+        int pointerIndex = event.getActionIndex(); // The index if for pointer in this case.
+        int actionMask = event.getActionMasked();
+        int pointerId = event.getPointerId(pointerIndex); // The pointer id is needed to retrieve pointer associated data.
+        switch (actionMask){
+            case MotionEvent.ACTION_DOWN:
+                if(mVelocityTracker == null){
+                    mVelocityTracker = VelocityTracker.obtain();
+                }else{
+                    // Reset the VelocityTracker back to its initial state.
+                    mVelocityTracker.clear();
+                }
+                mVelocityTracker.addMovement(event);
+                // Add a user's movement to the tracker. As the method contract say, you should call this
+                // initial ACTION_DOWN, the following ACTION_MOVE events that you receive, and the final
+                // ACTION_UP. You can, however, call this for whichever other events you want.
+                return true;
+            case MotionEvent.ACTION_MOVE:
+                mVelocityTracker.addMovement(event);
+                mVelocityTracker.computeCurrentVelocity(1000); // Compute velocity in seconds unit. Like 600 pixels per second.
+                Log.d(TAG, String.format(Locale.US, "onTouchEvent, X velocity: %1s; Y velocity: %2s",
+                        VelocityTrackerCompat.getXVelocity(mVelocityTracker, pointerId),
+                        VelocityTrackerCompat.getYVelocity(mVelocityTracker, pointerId)));
+                return true;
+            case MotionEvent.ACTION_UP:
+                mVelocityTracker.addMovement(event);
+            case MotionEvent.ACTION_CANCEL:
+                // Do what the VelocityTracker#obtain() method says. Android happy, you happy.
+                mVelocityTracker.recycle(); // Return a VelocityTracker back to be re-used by others. You MUST NOT touch the object after calling this function.
+                mVelocityTracker = null; // I have encountered many crashes because of IllegalStateException saying that "Already in the pool!" before I add this line of code.
+                return true;
+        }
         return super.onTouchEvent(event);
     }
 
+    @Override
+    public boolean onGenericMotionEvent(MotionEvent event) {
+        Log.d(TAG, "onGenericMotionEvent: " + event); // This is not by called at all. It handled by views' onTouchEvent.
+        return super.onGenericMotionEvent(event);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,6 +167,14 @@ public class MainActivity extends SampleActivityBase {
             @Override
             public boolean onDoubleTapEvent(MotionEvent e) {
                 Log.d(GESTURE_TAG, "OnDoubleTapListener#onDoubleTapEvent: ");
+                return false;
+            }
+        });
+
+        findViewById(R.id.sample_output).setOnGenericMotionListener(new View.OnGenericMotionListener() {
+            @Override
+            public boolean onGenericMotion(View v, MotionEvent event) {
+                Log.d(TAG, "OnGenericMotionListener#onGenericMotion: ");
                 return false;
             }
         });
