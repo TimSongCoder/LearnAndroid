@@ -17,9 +17,12 @@
 
 package com.example.android.immersivemode;
 
+import android.gesture.Gesture;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GestureDetectorCompat;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MotionEvent;
 
@@ -39,9 +42,15 @@ public class MainActivity extends SampleActivityBase {
 
     public static final String FRAGTAG = "ImmersiveModeFragment";
 
+    public static final String GESTURE_TAG = "GESTURE_DETECTOR";
+
+    private GestureDetectorCompat mGestureDetector;
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         Log.d(TAG, "onTouchEvent: " + event);
+        mGestureDetector.onTouchEvent(event);
+        // Let the GestureDetector analyze the given MotionEvent and it will trigger the appropriate callbacks OnGestureListener supplied if applicable.
         return super.onTouchEvent(event);
     }
 
@@ -56,6 +65,63 @@ public class MainActivity extends SampleActivityBase {
             transaction.add(fragment, FRAGTAG);
             transaction.commit();
         }
+
+        // Feel the GestureDetector work flow.
+        mGestureDetector = new GestureDetectorCompat(this, new GestureDetector.OnGestureListener() {
+            @Override
+            public boolean onDown(MotionEvent e) {
+                Log.d(GESTURE_TAG, "OnGestureListener#onDown: ");
+                return false;
+            }
+
+            @Override
+            public void onShowPress(MotionEvent e) {
+                Log.d(GESTURE_TAG, "OnGestureListener#onShowPress: ");
+            }
+
+            @Override
+            public boolean onSingleTapUp(MotionEvent e) {
+                Log.d(GESTURE_TAG, "OnGestureListener#onSingleTapUp: ");
+                return false;
+            }
+
+            @Override
+            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                Log.d(GESTURE_TAG, "OnGestureListener#onScroll: ");
+                return false;
+            }
+
+            @Override
+            public void onLongPress(MotionEvent e) {
+                Log.d(GESTURE_TAG, "OnGestureListener#onLongPress: ");
+            }
+
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                Log.d(GESTURE_TAG, "OnGestureListener#onFling: ");
+                return false;
+            }
+        });
+
+        mGestureDetector.setOnDoubleTapListener(new GestureDetector.OnDoubleTapListener() {
+            @Override
+            public boolean onSingleTapConfirmed(MotionEvent e) {
+                Log.d(GESTURE_TAG, "OnDoubleTapListener#onSingleTapConfirmed: ");
+                return false;
+            }
+
+            @Override
+            public boolean onDoubleTap(MotionEvent e) {
+                Log.d(GESTURE_TAG, "OnDoubleTapListener#onDoubleTap: ");
+                return false;
+            }
+
+            @Override
+            public boolean onDoubleTapEvent(MotionEvent e) {
+                Log.d(GESTURE_TAG, "OnDoubleTapListener#onDoubleTapEvent: ");
+                return false;
+            }
+        });
     }
 
     @Override
