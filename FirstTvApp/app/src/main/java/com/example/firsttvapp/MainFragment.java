@@ -75,7 +75,7 @@ public class MainFragment extends BrowseFragment {
 
 //        prepareBackgroundManager();
 //
-//        setupUIElements();
+        setupUIElements();
 //
 //        loadRows();
 //
