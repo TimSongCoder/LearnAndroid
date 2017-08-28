@@ -73,13 +73,13 @@ public class MainFragment extends BrowseFragment {
         Log.i(TAG, "onCreate");
         super.onActivityCreated(savedInstanceState);
 
-//        prepareBackgroundManager();
+        prepareBackgroundManager();
 //
         setupUIElements();
 //
         loadRows();
 //
-//        setupEventListeners();
+        setupEventListeners();
     }
 
     @Override
